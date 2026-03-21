@@ -1,0 +1,14 @@
+原因は明確です。.vagrant/ディレクトリ（VMの実体ファイル）がGitに含まれてしまっています。
+1. .gitignoreに追加
+bashcd ~/torinoue_inception
+echo ".vagrant/" >> .gitignore
+echo "secrets/" >> .gitignore
+echo "srcs/.env" >> .gitignore
+
+2. すでにGitに追跡されている.vagrant/を除外
+bashgit rm -r --cached srcs/vm/.vagrant/
+
+3. コミット＆プッシュ
+git add .gitignore
+git commit -m "fix: add .gitignore, remove .vagrant from tracking"
+git push
