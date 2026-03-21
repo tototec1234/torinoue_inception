@@ -1,0 +1,79 @@
+今の状況と課題の難易度
+正直に言うと、Inceptionは42の中でも難しめの課題です。必要な知識が多い：
+
+Vagrant（未経験）
+VM構築・Linux操作
+NGINX + TLS設定
+WordPress + PHP-FPM
+MariaDB設定
+Docker Compose（Part 8で触れた程度）
+Makefile
+Docker secrets / .env
+
+一気に全部やろうとすると確実に詰まります。
+
+提案：学ぶ順番
+先輩のコードを先に見るより、土台から理解して積み上げる方が結果的に早いです。
+以下の順番を提案します：
+
+1.Vagrantで VM を立てる（1〜2日）
+2.VM内でMariaDBを手動で動かしてみる（概念理解）
+3.MariaDBのDockerfileを書く
+4.WordPressへ進む
+5.NGINXへ進む
+
+成果物の全体像
+VM構成
+
+VagrantfileはVirtualBox使用 → M2 MacではそのままでNGです（後述）
+init.sh でVM内にDockerをインストールしている
+
+コンテナ構成（全てAlpine 3.22ベース）
+[NGINX]      ← openssl で自己署名証明書を生成、port 443
+   ↓ fastcgi (port 9000)
+[WordPress]  ← php-fpm + wp-cli でWordPress設定
+   ↓ port 3306
+[MariaDB]    ← entrypoint.shでDB・ユーザー作成
+流れの概要
+
+1.vagrant up → VMが立ち上がり、init.shでDockerインストール
+2.VM内で make up → docker compose でビルド・起動
+3.ブラウザで https://toruinoue.42.fr にアクセス
+
+移植のオーバーヘッド
+結論：30分〜2時間程度です。 ただし条件付きです。
+変更が必要な箇所
+Vagrantfileのprovider部分だけです：
+ruby# M2 Mac（VMware Fusion）
+config.vm.provider "vmware_fusion" do |vb|
+  vb.memory = "4096"
+  vb.cpus = 2
+end
+
+# 校舎（VirtualBox）に戻す場合
+config.vm.provider "virtualbox" do |vb|
+  vb.memory = "4096"
+end
+Docker関連のファイルは一切変更不要です。 Dockerfileもdocker-compose.ymlもそのまま動きます。
+
+
+完璧です。必要なものが全部揃いました：
+
+Vagrant ✅
+VMware Fusion ✅
+vagrant-vmware-desktop プラグイン ✅
+Vagrant VMware Utility ✅
+
+
+
+cd ~/torinoue_inception
+mkdir -p srcs/requirements/nginx/conf srcs/requirements/nginx/tools
+mkdir -p srcs/requirements/wordpress/conf srcs/requirements/wordpress/tools
+mkdir -p srcs/requirements/mariadb/conf srcs/requirements/mariadb/tools
+mkdir secrets
+touch Makefile README.md USER_DOC.md DEV_DOC.md
+touch srcs/docker-compose.yml srcs/.env
+ls -la
+
+
+

@@ -1,0 +1,36 @@
+cd ~/torinoue_inception/srcs/vm
+vagrant up
+
+vagrant ssh
+
+toruinoue@TORU-INOUEnoMacBook-Pro vm % vagrant ssh
+Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 5.15.0-160-generic aarch64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Sat Mar 21 03:50:02 PM UTC 2026
+
+  System load:  0.07               Processes:             205
+  Usage of /:   21.0% of 29.82GB   Users logged in:       0
+  Memory usage: 8%                 IPv4 address for eth0: 192.168.2.128
+  Swap usage:   0%
+
+
+This system is built by the Bento project by Chef Software
+More information can be found at https://github.com/chef/bento
+
+Use of this system is acceptance of the OS vendor EULA and License Agreements.
+vagrant@vagrant:~$ docker --version
+Docker version 29.3.0, build 5927d80
+vagrant@vagrant:~$ docker compose version
+Docker Compose version v5.1.1
+
+
+今日の成果まとめ
+
+Vagrant + VMware Fusion環境構築 ✅
+Ubuntu 22.04 VM起動 ✅
+VM内にDocker / Docker Compose インストール ✅
+
