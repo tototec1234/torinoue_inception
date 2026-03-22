@@ -1,3 +1,5 @@
 .vagrant/
 secrets/
 srcs/.env
+.DS_Store
+project.zip

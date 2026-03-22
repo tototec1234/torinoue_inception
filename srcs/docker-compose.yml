@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  mariadb:
+    build: ./requirements/mariadb
+    env_file: .env
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:

@@ -1,0 +1,95 @@
+完全ゼロから、今日はMariaDBコンテナを起動するところまで一緒に進めましょう。
+今日作るもの
+srcs/requirements/mariadb/
+├── Dockerfile
+└── conf/
+    └── init.sql   （またはシェルスクリプト）
+srcs/docker-compose.yml
+srcs/.env
+
+Step 1：まず .env を作る
+VM内で以下を実行してください（値は自分で決めてOK）：
+bashcat << 'EOF' > ~/torinoue_inception/srcs/.env
+MYSQL_ROOT_PASSWORD=rootpassword
+MYSQL_DATABASE=wordpress
+MYSQL_USER=wpuser
+MYSQL_PASSWORD=wppassword
+EOF
+
+Step 2：MariaDB の Dockerfile を作る
+bashmkdir -p ~/torinoue_inception/srcs/requirements/mariadb/conf
+bashcat << 'EOF' > ~/torinoue_inception/srcs/requirements/mariadb/Dockerfile
+FROM debian:bookworm
+
+RUN apt-get update && apt-get install -y mariadb-server && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY conf/init.sh /init.sh
+RUN chmod +x /init.sh
+
+EXPOSE 3306
+
+CMD ["/init.sh"]
+EOF
+
+Step 3：起動スクリプトを作る
+bashcat << 'EOF' > ~/torinoue_inception/srcs/requirements/mariadb/conf/init.sh
+#!/bin/bash
+set -e
+
+# MariaDBを初期化（初回のみ）
+mysql_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null 2>&1
+
+# 一時的にサーバー起動
+mysqld_safe --skip-networking &
+sleep 3
+
+# DB・ユーザー作成
+mysql -u root <<SQL
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
+CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
+GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
+FLUSH PRIVILEGES;
+SQL
+
+# サーバー停止して本番起動
+mysqladmin -u root -p${MYSQL_ROOT_PASSWORD} shutdown
+exec mysqld_safe --bind-address=0.0.0.0
+EOF
+
+Step 4：docker-compose.yml を作る
+bashcat << 'EOF' > ~/torinoue_inception/srcs/docker-compose.yml
+version: '3'
+
+services:
+  mariadb:
+    build: ./requirements/mariadb
+    env_file: .env
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:
+EOF
+
+Step 5：ビルド＆起動
+bashcd ~/torinoue_inception/srcs
+docker compose build
+docker compose up
+
+
+接続成功です！（テーブルがまだないので出力なしは正常）
+今日のゴール達成です。 MariaDBコンテナが起動して、wpuserでwordpressデータベースに接続できました。
+
+今日やったことを整理します：
+.env                        → DB名・ユーザー・パスワードの定義
+Dockerfile                  → debian:bookworm + mariadb-server
+conf/init.sh                → DB初期化・ユーザー作成・本番起動
+docker-compose.yml          → コンテナ定義・ボリューム設定
+
+今日詰まったポイントも記録しておきます：
+
+mysqld_safe はクラッシュ時に自動再起動するので mysqld 直接起動に変えた
+/var/run/mysqld/ ディレクトリが存在しないのでinitで mkdir が必要だった
+docker compose run をCtrl+Cで止められないときはSSH新規接続で docker kill した
