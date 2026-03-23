@@ -7,5 +7,14 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
 
+  wordpress:
+    build: ./requirements/wordpress
+    env_file: .env
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress_data:/var/www/html
+
 volumes:
   mariadb_data:
+  wordpress_data:
