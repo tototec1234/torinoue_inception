@@ -91,7 +91,7 @@ AIの動作:
 - セッション開始時: `date '+%Y-%m-%d %H:%M'` を実行して開始時刻を記録
 - セッション終了時: 同コマンドで終了時刻を取得、ユーザーに実作業時間を確認して記録
 
-3. git commit:
+3. git commit（**提案のみ。実行はユーザーの明示的な指示があるまで行わない**）:
 ```bash
 git add .
 git commit -m "タスクX-Y: [完了内容の一言説明]"
@@ -179,6 +179,7 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 - [x] フェーズ1 事前クイズ実施済み → `quizzes/0100_alpine_mariadb_pre_quiz_inception.md`
 - [x] タスク 1-1: Alpine 3.21 の M2 Mac + Vagrant 動作検証 → **OK**（aarch64, apk, mariadbd 11.4.8 全て動作確認）
 - [x] タスク 1-2: 参考実装の MariaDB 精読 → 事後クイズ `quizzes/0102_mariadb_reference_post_quiz_inception.md`
+- [x] タスク 1-3: 一次資料の読み込み（mariadb-install-db 公式ドキュメント + Alpine Wiki MariaDB）
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み

@@ -1,0 +1,49 @@
+# 安定性と軽量さを両立したベースイメージ
+FROM alpine:3.21
+
+# データの保存場所を一括管理します
+ENV MYSQL_DATA_DIR=/var/lib/mysql \
+    MYSQL_RUN_DIR=/run/mysqld
+
+# 1. パッケージのインストール
+# レイヤーを統合し、キャッシュを残さないことでイメージサイズを最小化します
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache \
+        mariadb \
+        mariadb-client
+# [MariaDB - Alpine Wiki](https://wiki.alpinelinux.org/wiki/MariaDB)
+
+
+# 2. 環境の準備
+# PID 1として動く mariadbd が「自分の持ち物」として認識できるよう、事前に権限を整えます
+RUN mkdir -p ${MYSQL_RUN_DIR} ${MYSQL_DATA_DIR} && \
+    chown -R mysql:mysql ${MYSQL_RUN_DIR} ${MYSQL_DATA_DIR}
+# The datadir located at /var/lib/mysql must be owned by the mysql user and group. 
+
+# 3. データベースの初期化
+# OSユーザー「mysql」を指定して、システムテーブルを作成します
+RUN mariadb-install-db \
+    --user=mysql \
+    --datadir=${MYSQL_DATA_DIR} \
+    --basedir=/usr
+
+# 4. 設定ファイルの配置
+# COPY conf/my.cnf /etc/my.cnf
+COPY conf/my.cnf /etc/my.cnf.d/my.cnf
+
+# 5. エントリポイントの準備
+# ここで指定するスクリプトが、最終的に「exec」魔法を使って PID 1 を MariaDB に譲ります
+COPY tools/entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+
+# 外部公開用ポート
+EXPOSE 3306
+
+# コンテナ起動時に実行される「主役」の指定
+ENTRYPOINT ["/entrypoint.sh"]
+
+# --- 実験メモ (議論の軌跡) ---   
+# docker run --rm alpine:3.21 sh -c "apk add --no-cache mariadb mariadb-client > /dev/null 2>&1 && sleep 2 && which mariadb && sleep 2 "
+# [ホスト側からの観察] docker top $(docker ps -q)
+# [コンテナ内のPID 1直視] docker exec $(docker ps -q) ps
