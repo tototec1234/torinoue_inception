@@ -52,12 +52,35 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 | **事前クイズ (pre)** | フェーズ/タスク開始前 | 現時点の理解度を測定。何がわかっていないかを自覚する | `quizzes/XXYY_<topic>_pre_quiz_inception.md` |
 | **事後クイズ (post)** | フェーズ/タスク完了後 | 定着度を確認。弱点を洗い出す | `quizzes/XXYY_<topic>_post_quiz_inception.md` |
 
+### クイズMDの各Q構成（pre/post共通）
+
+各Qは以下の構成とする。**見出しは短いタイトル、直下に質問文の全文を記載**すること。
+後から見直したときに質問内容が一目でわかるようにするため。
+
+```
+## Q1. 短いタイトル
+
+質問文の全文をここに記載する。選択肢がある場合はリストで列挙する。
+
+**自分の回答：**
+（ここに自分の回答）
+
+**正解：**
+（正解の内容）
+
+**解説：**
+（解説）
+
+**一次資料：**
+- [リンクテキスト](URL)
+```
+
 ### postクイズ結果MDの構成
 
 ```
 # Inception レビュー対策ノート - ○○編
 
-## Q1〜Qn: 問題・自分の回答・正解・解説
+## Q1〜Qn: 問題・自分の回答・正解・解説（質問文の全文を必ず含める）
 
 ## 今日詰まったポイント（実装メモ）
 
@@ -67,7 +90,7 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 
 ---
 
-## 現状分析（2026-03-23時点）
+## 現状分析（2026-03-24時点）
 
 ### 完了済み
 - [x] Vagrant + VMware Fusion 環境構築（Vagrantfile, init.sh）
@@ -75,6 +98,9 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 - [x] WordPress コンテナ（Dockerfile + init.sh）着手
 - [x] WordPress 事前クイズ実施済み → `quizzes/0000_wordpress_pre_quiz_inception.md`（v1計画以前に実施）
 - [x] MariaDB 事後クイズ実施済み → `quizzes/0000_mariadb_post_quiz_inception.md`（v1計画以前に実施）
+- [x] フェーズ1 事前クイズ実施済み → `quizzes/0100_alpine_mariadb_pre_quiz_inception.md`
+- [x] タスク 1-1: Alpine 3.21 の M2 Mac + Vagrant 動作検証 → **OK**（aarch64, apk, mariadbd 11.4.8 全て動作確認）
+- [x] タスク 1-2: 参考実装の MariaDB 精読 → 事後クイズ `quizzes/0102_mariadb_reference_post_quiz_inception.md`
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み
@@ -125,6 +151,13 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 | 1-5 | my.cnf 作成 | 1h | bind-address, port, skip-networking 設定 |
 | 1-6 | entrypoint.sh 作成 | 2h | 初期化ガード + ping 待機 + 冪等な SQL + exec mariadbd |
 | 1-7 | 単体テスト | 1h | コンテナ起動 → mariadb-admin ping → クライアント接続 |
+
+**タスク 1-2 の事後ミニクイズ → `quizzes/0102_mariadb_reference_post_quiz_inception.md`**
+- `mariadb-install-db` の役割とビルド時実行の問題点
+- 一時起動 → シャットダウン → 本番起動の理由
+- `sleep` 固定待機の問題点と改善方法
+- `IF NOT EXISTS` と冪等性
+- `apk add --no-cache` の意味
 
 **タスク 1-4 の事後ミニクイズ → `quizzes/0104_mariadb_dockerfile_post_quiz_inception.md`**
 - `mariadbd` と `mysqld` の違い
@@ -335,6 +368,7 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 
 | ファイル名 | タスク | 内容 |
 |-----------|--------|------|
+| `0102_mariadb_reference_post_quiz_inception.md` | 1-2 | 参考実装の MariaDB 精読 |
 | `0104_mariadb_dockerfile_post_quiz_inception.md` | 1-4 | MariaDB Dockerfile 理解 |
 | `0106_mariadb_entrypoint_post_quiz_inception.md` | 1-6 | MariaDB entrypoint.sh 理解 |
 | `0204_nginx_conf_post_quiz_inception.md` | 2-4 | nginx.conf 理解 |
@@ -347,7 +381,7 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 ## 未確認事項（要フォローアップ）
 
 - [ ] Docker secrets: Swarm なしの compose file secrets で要件を満たすか（同期 or 先輩に確認、**M2 Mac 版完成後**）
-- [ ] Alpine 3.21 が M2 Mac + Vagrant (VMware Fusion) 上で正常動作するか（**フェーズ1-1で検証**）
+- [x] ~~Alpine 3.21 が M2 Mac + Vagrant (VMware Fusion) 上で正常動作するか~~ → **2026-03-24 タスク1-1で確認済み**（aarch64, apk-tools 2.14.6, mariadbd 11.4.8-MariaDB）
 - [ ] penultimate stable version の解釈（3.21 で正しいか、レビュアーとの認識合わせ）
 
 ---
