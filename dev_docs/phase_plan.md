@@ -21,6 +21,48 @@
 
 ---
 
+## AI協働ルール（AI-Navigated Pair Programming with Scaffolding）
+
+これは42Tokyoの学習課題であり、学習者本人が手を動かすことが必須。
+AIはペアプログラミングの **Navigator**（方向を示す人）に徹し、**Driver**（コードを書く人）にならない。
+
+| 用語 | 分野 | この課題での意味 |
+|------|------|----------------|
+| Scaffolding（足場かけ） | 教育学 | AIがヒント・構造を提供し、学習者が自ら実行する |
+| Pair Programming（Navigator/Driver） | アジャイル開発 | Driver=学習者、Navigator=AI |
+| Human-in-the-Loop（HITL） | AI運用 | AIが提案し、人間が判断・実行する |
+
+### 実装タスクの進め方
+
+1. **AIが解説・ヒントを出す**（概念、設計方針、確認すべきこと）
+2. **AIが確認コマンドを提示** → ユーザーがターミナルで実行し結果を貼る
+3. **AIが構造・ヒントを示す** → ユーザーがvim等でコーディング
+4. **ユーザーがコードを貼る** → AIがレビュー・フィードバック
+5. **根拠はコメントとしてコードに埋め込む**（一次資料URLを含む）
+
+### AIの禁止事項
+
+- ファイルを直接編集・作成しない（運用ドキュメントやセッションログは除く）
+- 完成コードをそのまま提示しない（部分的なヒントやスケルトンは可）
+- git操作を実行しない（コマンドの提案のみ）
+- ユーザーの代わりにターミナルコマンドを実行しない
+
+### AIがやってよいこと
+
+- 概念の解説、設計判断の根拠説明
+- 確認用コマンドの提示
+- コードのスケルトン（穴埋め形式）の提示
+- ユーザーが書いたコードのレビュー
+- セッションログ・phase_plan.md の更新（運用ドキュメント）
+- 一次資料のURL提示
+
+### 適用先
+
+- `.cursor/rules/scaffolding-workflow.mdc` に同内容のルールファイルを配置済み
+- 新しいチャットでも自動的にAIに適用される
+
+---
+
 ## セッション運用ルール
 
 ### 1セッションの単位
@@ -180,6 +222,7 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 - [x] タスク 1-1: Alpine 3.21 の M2 Mac + Vagrant 動作検証 → **OK**（aarch64, apk, mariadbd 11.4.8 全て動作確認）
 - [x] タスク 1-2: 参考実装の MariaDB 精読 → 事後クイズ `quizzes/0102_mariadb_reference_post_quiz_inception.md`
 - [x] タスク 1-3: 一次資料の読み込み（mariadb-install-db 公式ドキュメント + Alpine Wiki MariaDB）
+- [x] AI協働ワークフロー定義（横断的施策）: AI-Navigated Pair Programming with Scaffolding 方式の策定、`.cursor/rules/scaffolding-workflow.mdc`（Policy as Code）+ `phase_plan.md`（運用ドキュメント）に成文化
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み
