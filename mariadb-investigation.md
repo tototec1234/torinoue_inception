@@ -34,7 +34,15 @@ which mariadb-install-db
 
 ### ENTRYPOINT上書き版（より安全）
 ```bash
-vagrant ssh -c 'docker run -RYPOINT + sh -c '...'` になる可能性あり
+vagrant ssh -c 'docker run --rm --entrypoint sh mariadb-test:alpine321 -c "..."' 2>&1
+```
+
+- `--entrypoint sh` でENTRYPOINTを強制上書き
+- Dockerfileに何が書いてあろうと確実にシェルが実行される
+- 調査目的にはこちらの方が適切
+
+### 違い
+- ENTRYPOINTなし版: `ENTRYPOINT + sh -c '...'` になる可能性あり
 - ENTRYPOINT上書き版: 確実に `sh -c "..."` が走る
 
 ## 2. イメージサイズ確認
@@ -73,7 +81,14 @@ mysql:x:101:mysql
 ```
 
 - UID 100, GID 101
-mysqlユーザーと一致しないとパーミッションエラーになる
+- `apk add mariadb` だけで自動作成される → Dockerfileで `adduser` 不要
+- `/sbin/nologin` = ログイン不可（セキュリティ目的）
+
+### UID / GID とは
+- UID = User ID, GID = Group ID
+- Linuxはファイル所有者やプロセス権限をこの数値で管理
+- Cの `getuid()` や `stat()` で取れる数値がこれ
+- `/var/lib/mysql/` の所有者がmysqlユーザーと一致しないとパーミッションエラーになる
 
 ## 4. MariaDB設定ファイルの構造
 
@@ -108,4 +123,8 @@ skip-networking
 **Inceptionでは別コンテナ（WordPress等）からMariaDBにTCPで接続する必要があるので、これを無効化しないとコンテナ間通信ができない。**
 
 ### 対処法
-- 自分の設定ファイル
+- 自分の設定ファイルを `/etc/my.cnf.d/` に置いて `skip-networking` を打ち消す
+- ファイル名のアルファベット順で読み込まれるので、`mariadb-server.cnf` より後に読まれる名前にする必要がある（例: `z-custom.cnf` なら確実に後）
+- もしくは、Dockerfileで `mariadb-server.cnf` 自体を上書き・削除してしまうのもあり
+
+### 補足: 同じセクションの設定は後から読まれたファイルが上書きする
