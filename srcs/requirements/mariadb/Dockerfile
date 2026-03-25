@@ -36,8 +36,9 @@ RUN mkdir -p ${MYSQL_RUN_DIR} ${MYSQL_DATA_DIR} && \
 # 4. 設定ファイルの配置
 # Alpine の !includedir 構造を利用
 # 根拠: /etc/my.cnf の !includedir /etc/my.cnf.d
-COPY conf/my.cnf /etc/my.cnf.d/my.cnf
-
+# コピー元を確認したい場合は、cat /vagrant/srcs/requirements/mariadb/conf/zaphod-mariadb.cnf
+COPY conf/zaphod-mariadb.cnf /etc/my.cnf.d/zaphod-mariadb.cnf
+# docker run --rm --entrypoint sh mariadb-test:task14 -c "cat /etc/my.cnf"
 # 5. エントリポイントスクリプトの配置
 # ここで指定するスクリプトが、最終的に「exec」魔法を使って PID 1 を MariaDB に譲ります
 COPY tools/entrypoint.sh /

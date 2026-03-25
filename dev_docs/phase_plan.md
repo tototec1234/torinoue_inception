@@ -230,7 +230,7 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 
 ---
 
-## 現状分析（2026-03-24時点）
+## 現状分析（2026-03-26時点）
 
 ### 完了済み
 - [x] Vagrant + VMware Fusion 環境構築（Vagrantfile, init.sh）
@@ -244,6 +244,9 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 - [x] タスク 1-3: 一次資料の読み込み（mariadb-install-db 公式ドキュメント + Alpine Wiki MariaDB）
 - [x] AI協働ワークフロー定義（横断的施策）: AI-Navigated Pair Programming with Scaffolding 方式の策定、`.cursor/rules/scaffolding-workflow.mdc`（Policy as Code）+ `phase_plan.md`（運用ドキュメント）に成文化
 - [x] タスク 1-4: MariaDB Dockerfile を Alpine 3.21 で新規作成 → ビルド成功、イメージ内部検証完了
+- [x] タスク 1-5: `zaphod-mariadb.cnf` 作成 → `bind-address = 0.0.0.0`、`skip-networking = 0` で TCP 有効化、アルファベット順制御
+- [x] タスク 1-6: `entrypoint.sh` 本実装完成 → 初期化ガード + ping ループ（42回タイムアウト）+ `exec mariadbd`
+- [x] タスク 1-7: MariaDB 単体テスト → 5段階初期化フロー確認、DB・ユーザー作成確認、全項目合格
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み
@@ -268,10 +271,10 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 | 3 | WordPress コンテナ再構築 | 12h | pre + post |
 | 4 | Docker Compose 統合 + secrets + healthcheck | 14h | pre + post |
 | 5 | Makefile + テスト | 7h | post のみ |
-| 6 | ドキュメント作成 | 9h | post のみ |
+| 6 | ドキュメント作成 | 11h | post のみ |
 | 7 | 校舎環境移植 | 9h | post のみ |
 | 8 | レビュー準備 | 11h | 総合クイズ |
-| **合計** | | **90h** | |
+| **合計** | | **92h** | |
 
 ---
 
@@ -429,18 +432,21 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 
 ---
 
-## フェーズ 6: ドキュメント作成（9時間）
+## フェーズ 6: ドキュメント作成（11時間）
 
 | # | タスク | 時間 | 備考 |
 |---|--------|------|------|
 | 6-1 | README.md | 4h | 英語。4つの比較（VM vs Docker, Secrets vs Env, Docker Network vs Host, Volumes vs Bind Mounts）、Resources、AI使用説明 |
 | 6-2 | USER_DOC.md | 2.5h | サービス概要、起動/停止、アクセス方法、認証情報管理 |
 | 6-3 | DEV_DOC.md | 2.5h | 環境構築手順、ビルド/起動、コンテナ管理、データ永続化 |
-| 6-4 | Spike記録集約ドキュメント作成 | — | 全セッションログからSpike記録を横断収集。保存先はこのタスクで検討 |
-| 6-5 | PoC記録集約ドキュメント作成 | — | 全セッションログからPoC記録を横断収集。保存先はこのタスクで検討 |
+| 6-4 | Spike記録集約ドキュメント作成 | 1h | 全セッションログからSpike記録を横断収集。保存先: `session_logs/spike_records.md` |
+| 6-5 | PoC記録集約ドキュメント作成 | 1h | 全セッションログからPoC記録を横断収集。保存先: `session_logs/poc_records.md` |
 
 ### 事後クイズ → `quizzes/0600_docs_post_quiz_inception.md`
-- README の4つの比較を口頭で説明できるか
+- VM vs Docker: カーネル共有の有無、隔離の仕組み（namespaces/cgroups）、Inception で両方使う理由
+- Secrets vs Env: `docker inspect` での可視性、`/run/secrets/` マウントの仕組み、課題要件での使い分け
+- Docker Network vs Host: bridge ネットワークの隔離性、ポート公開の違い、Inception での設計意図
+- Volumes vs Bind Mounts: Docker 管理 vs ホストパス依存、ライフサイクルの違い、永続化の設計判断
 - レビュー想定問答集付き
 
 ---

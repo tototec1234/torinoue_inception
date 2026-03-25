@@ -1,0 +1,15 @@
+[mysqld] 
+
+# TCP接続の待ち受けアドレス（全インターフェース）
+# 根拠: https://mariadb.com/kb/en/server-system-variables/#bind_address
+bind-address = 0.0.0.0
+
+# TCP接続の待ち受けポート
+# 根拠: https://mariadb.com/kb/en/server-system-variables/#port
+port = 3306
+
+# Alpine デフォルトの skip-networking を上書き無効化
+# mariadb-server.cnf に skip-networking があり、アルファベット順で
+# zaphod-mariadb.cnf が後に読まれるため上書き可能
+# 根拠: https://mariadb.com/kb/en/server-system-variables/#skip_networking
+skip-networking = 0
