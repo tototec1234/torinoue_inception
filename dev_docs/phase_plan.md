@@ -247,6 +247,7 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 - [x] タスク 1-5: `zaphod-mariadb.cnf` 作成 → `bind-address = 0.0.0.0`、`skip-networking = 0` で TCP 有効化、アルファベット順制御
 - [x] タスク 1-6: `entrypoint.sh` 本実装完成 → 初期化ガード + ping ループ（42回タイムアウト）+ `exec mariadbd`
 - [x] タスク 1-7: MariaDB 単体テスト → 5段階初期化フロー確認、DB・ユーザー作成確認、全項目合格
+- [x] フェーズ1 事後クイズ → `quizzes/0100_alpine_mariadb_post_quiz_inception.md`（全18問、弱点の洗い出し完了）
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み

@@ -28,7 +28,7 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 
 	# SQL実行（CREATE DATABASE / USER / GRANT / FLUSH）
 	# DBのrootユーザーとしてログイン（「d」がない）
-	# User Accounts Created by Default
+	# User Accounts Created by Defaul
 	# https://mariadb.com/docs/server/clients-and-utilities/deployment-tools/mariadb-install-db
 	# 
 	# unix_socket認証: OSのmysqlユーザーとして動作中のプロセスはパスワードなしでroot接続可能
