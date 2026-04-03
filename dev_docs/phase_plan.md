@@ -262,12 +262,15 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 - [x] フェーズ1 事後クイズ → `quizzes/0100_alpine_mariadb_post_quiz_inception.md`（全18問、弱点の洗い出し完了）
 - [x] フェーズ2 事前クイズ → `quizzes/0200_nginx_pre_quiz_inception.md`（全18問、弱点の洗い出し完了）
 - [x] タスク 2-1: NGINX + TLS の概念学習 → 一次資料（Beginner’s Guide / `ngx_http_ssl_module` / RFC 8446 ほか）読了、`ngx_http_fastcgi_module` 確認、リバースプロキシ／**上流（upstream）** の整理 → `dev_docs/nginx_reverse_proxy_upstream_memo.md`
+- [x] タスク 2-2: 参考実装の NGINX 精読（`Vagrant_sample` の Dockerfile + `nginx.conf`）→ 実装と横断して消化
+- [x] タスク 2-3: NGINX 用 Dockerfile 作成 → Alpine 3.21、`openssl`、自己署名証明書、`ENTRYPOINT` と `daemon off` 等 → `srcs/requirements/nginx/Dockerfile`
+- [x] タスク 2-4: `nginx.conf` 作成 → TLS、443、`fastcgi_pass`、静的配信 → `srcs/requirements/nginx/conf/torinoue_nginx.conf`（学習メモ: `dev_docs/inception_nginx_daemon_memo.md`, `dev_docs/docker_nginx_study.md`）。**タスク 2-4 専用の事後ミニクイズは実施しない**（`0200_nginx_pre_quiz_inception.md` で `ssl_protocols` / `try_files` / `fastcgi_pass` のサービス名解決などを既にカバーしたため、計画から除外）
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み
 2. ~~WordPress Dockerfile URL typo~~ → 修正済み
 3. docker-compose.yml: networks なし、volume driver_opts なし、restart なし（課題要件違反）
-4. NGINX 未実装
+4. ~~NGINX 未実装~~ → Dockerfile・`nginx.conf` は実装済み（タスク 2-5〜・compose 統合は未）
 5. secrets 未設定
 6. ベースイメージ: Debian bookworm → Alpine 3.21 へ全面変更が必要
 7. WordPress Dockerfile: PHP 拡張が不足
@@ -355,11 +358,6 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 | 2-4 | nginx.conf 作成 | 4h | TLSv1.2/1.3 のみ、443、fastcgi_pass、静的ファイル |
 | 2-5 | 単体テスト | 2h | `curl -kv https://localhost:443` でTLSバージョン確認 |
 | 2-6 | NGINX + MariaDB 接続テスト（静的ページ） | 2h | NGINX → HTML 配信確認 |
-
-**タスク 2-4 の事後ミニクイズ → `quizzes/0204_nginx_conf_post_quiz_inception.md`**
-- `ssl_protocols TLSv1.2 TLSv1.3;` の意味
-- `try_files $uri $uri/ /index.php?$args;` の動作フロー
-- `fastcgi_pass wordpress:9000;` がなぜサービス名で解決されるか
 
 ### 事後クイズ → `quizzes/0200_nginx_post_quiz_inception.md`
 - レビュー想定問答集付き
@@ -537,7 +535,6 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 | `0102_mariadb_reference_post_quiz_inception.md` | 1-2 | 参考実装の MariaDB 精読 |
 | `0104_mariadb_dockerfile_post_quiz_inception.md` | 1-4 | MariaDB Dockerfile 理解 |
 | `0106_mariadb_entrypoint_post_quiz_inception.md` | 1-6 | MariaDB entrypoint.sh 理解 |
-| `0204_nginx_conf_post_quiz_inception.md` | 2-4 | nginx.conf 理解 |
 | `0304_wordpress_entrypoint_post_quiz_inception.md` | 3-4 | WordPress entrypoint.sh 理解 |
 | `0402_compose_yml_post_quiz_inception.md` | 4-2 | docker-compose.yml 理解 |
 | `0404_compose_secrets_post_quiz_inception.md` | 4-4 | Docker secrets 理解 |
