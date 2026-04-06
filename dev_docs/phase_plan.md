@@ -1,6 +1,6 @@
 # Inception 課題 学習・実装計画 v3
 
-> 更新日: 2026-04-03
+> 更新日: 2026-04-04
 > 残り時間: **90時間**
 
 ## 基本方針
@@ -101,6 +101,9 @@ Inception課題（42Tokyo）を進めています。
 - session_logs/ 内の最新セッションログ（最も番号が大きいファイル）
 
 今日やること: [タスク番号とタスク名] 例: タスク1-4（MariaDB Dockerfile 作成）
+
+セッション開始時刻の記録（ターミナルで実行し、結果をチャットに貼る）:
+date '+%Y-%m-%d %H:%M'
 ```
 
 ### セッション終了時にAIがやること（必須）
@@ -153,6 +156,7 @@ Inception課題（42Tokyo）を進めています。
 
 ## 次のセッションでやること
 （タスク番号と名前、必要なら注意事項）
+- セッション開始時: `date '+%Y-%m-%d %H:%M'` を実行して開始時刻を記録（上記「開始」欄やチャットへの貼り付けに用いる）
 
 ## 未解決事項
 （あれば）
@@ -227,6 +231,17 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 - [リンクテキスト](URL)
 ```
 
+### クイズMD作成フロー（AI と ドライバーの役割分担）
+
+AIが先に正解・解説を書くと、ドライバーの視界に答えが入り自分で考える機会を奪う。そのため以下のフローで進める。
+
+| ステップ | 誰が | やること |
+|---------|------|---------|
+| 1. MD 作成 | **AI** | 問題文・選択肢・「自分の回答：（ここに記入）」・一次資料 のみを書いた MD を作成。**正解・解説は書かない** |
+| 2. 解答 | **ドライバー** | 「自分の回答」欄を埋める |
+| 3. 提出 | **ドライバー** | 埋めた MD をチャットに貼る |
+| 4. 採点 | **AI** | 正解・解説を各Qに追記し、MD を更新する |
+
 ### postクイズ結果MDの構成
 
 ```
@@ -242,7 +257,7 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 
 ---
 
-## 現状分析（2026-04-03時点）
+## 現状分析（2026-04-04時点）
 
 ### 完了済み
 - [x] Vagrant + VMware Fusion 環境構築（Vagrantfile, init.sh）
@@ -265,12 +280,15 @@ XXYY_<topic>_<pre|post>_quiz_inception.md
 - [x] タスク 2-2: 参考実装の NGINX 精読（`Vagrant_sample` の Dockerfile + `nginx.conf`）→ 実装と横断して消化
 - [x] タスク 2-3: NGINX 用 Dockerfile 作成 → Alpine 3.21、`openssl`、自己署名証明書、`ENTRYPOINT` と `daemon off` 等 → `srcs/requirements/nginx/Dockerfile`
 - [x] タスク 2-4: `nginx.conf` 作成 → TLS、443、`fastcgi_pass`、静的配信 → `srcs/requirements/nginx/conf/torinoue_nginx.conf`（学習メモ: `dev_docs/inception_nginx_daemon_memo.md`, `dev_docs/docker_nginx_study.md`）。**タスク 2-4 専用の事後ミニクイズは実施しない**（`0200_nginx_pre_quiz_inception.md` で `ssl_protocols` / `try_files` / `fastcgi_pass` のサービス名解決などを既にカバーしたため、計画から除外）
+- [x] タスク 2-5: NGINX 単体テスト（TLS・443）→ ユーザ定義ネットワーク + コンテナ名 `wordpress` スタブ（方針 A）、`curl -v` で TLSv1.3 確認 → `session_logs/0010_session_log_inception.md`
+- [x] タスク 2-6: NGINX + MariaDB 接続テスト（静的ページ）→ `inception-test-net` 上で NGINX・MariaDB・`wordpress` スタブを配置、`index.html` を手動配置して `curl` で HTTP 200、MariaDB は `mariadb-admin ping` で確認 → `nginx.conf` 変更なし → `session_logs/0011_session_log_inception.md`
+- [x] フェーズ2 事後クイズ → `quizzes/0200_nginx_post_quiz_inception.md`（全13問、選択式7/7 全問正解、弱点: Q11 設計レベルの説明力・Q7 `docker network connect` の正確な理解）
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み
 2. ~~WordPress Dockerfile URL typo~~ → 修正済み
 3. docker-compose.yml: networks なし、volume driver_opts なし、restart なし（課題要件違反）
-4. ~~NGINX 未実装~~ → Dockerfile・`nginx.conf` は実装済み（タスク 2-5〜・compose 統合は未）
+4. ~~NGINX 未実装~~ → Dockerfile・`nginx.conf` は実装済み、**タスク 2-5・2-6（TLS 単体テスト、NGINX + MariaDB 共存での静的 HTML 配信）完了**（compose 統合は未）
 5. secrets 未設定
 6. ベースイメージ: Debian bookworm → Alpine 3.21 へ全面変更が必要
 7. WordPress Dockerfile: PHP 拡張が不足
