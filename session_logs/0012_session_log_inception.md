@@ -91,6 +91,6 @@ Inception課題（42Tokyo）を進めています。
 以下を読んで現在地を把握してから作業を始めてください:
 - dev_docs/phase_plan.md（全体計画・運用ルール）
 - session_logs/ 内の最新セッションログ（最も番号が大きいファイル）
-
+- セッション開始時: `date '+%Y-%m-%d %H:%M'` を実行して開始時刻を記録（上記「開始」欄やチャットへの貼り付けに用いる）
 今日やること: フェーズ3 事前クイズ（quizzes/0300_wordpress_alpine_pre_quiz_inception.md）
 ```
