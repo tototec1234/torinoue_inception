@@ -1,0 +1,21 @@
+
+torinoue@c6r4s4 ~/tmp/0409inception/srcs/vm
+ % vagrant up --provider=virtualbox
+Bringing machine 'default' up with 'virtualbox' provider...
+==> default: Importing base box 'bento/ubuntu-22.04'...
+==> default: Matching MAC address for NAT networking...
+==> default: Checking if box 'bento/ubuntu-22.04' version '202510.26.0' is up to date...
+==> default: Setting the name of the VM: vm_default_1775745137435_31215
+==> default: Clearing any previously set network interfaces...
+There was an error while executing `VBoxManage`, a CLI used by Vagrant
+for controlling VirtualBox. The command and stderr is shown below.
+
+Command: ["showvminfo", "7cf9f16c-df22-4860-a070-ef46b9240522", "--machinereadable"]
+
+Stderr: awk: symbol lookup error: /tmp/.mount_vagranWm88FA/usr/lib/libreadline.so.8: undefined symbol: UP
+/usr/lib/virtualbox/VBoxManage: /tmp/.mount_vagranWm88FA/usr/lib/libcurl.so.4: no version information available (required by /usr/lib/virtualbox/VBoxRT.so)
+VBoxManage: error: Could not find a registered machine with UUID {7cf9f16c-df22-4860-a070-ef46b9240522}
+VBoxManage: error: Details: code VBOX_E_OBJECT_NOT_FOUND (0x80bb0001), component VirtualBoxWrap, interface IVirtualBox, callee nsISupports
+VBoxManage: error: Context: "FindMachine(Bstr(VMNameOrUuid).raw(), machine.asOutParam())" at line 3138 of file VBoxManageInfo.cpp
+
+torinoue@c6r4s4 ~/tmp/0409inception/srcs/vm
