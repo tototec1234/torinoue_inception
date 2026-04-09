@@ -34,6 +34,9 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 	# unix_socket認証: OSのmysqlユーザーとして動作中のプロセスはパスワードなしでroot接続可能
 	# 根拠: https://mariadb.com/kb/en/unix_socket-authentication-plugin/
 	mariadb --user root <<EOF
+	DELETE FROM mysql.user WHERE User='';
+	DROP DATABASE IF EXISTS test;
+	DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
 	CREATE DATABASE IF NOT EXISTS $MARIADB_DATABASE;
 	CREATE USER IF NOT EXISTS '$MARIADB_USER'@'%' IDENTIFIED BY '$MARIADB_PASSWORD';
 	GRANT ALL PRIVILEGES ON $MARIADB_DATABASE.* TO '$MARIADB_USER'@'%';
