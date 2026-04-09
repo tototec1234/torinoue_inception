@@ -86,29 +86,20 @@
 
 
 # Vagrantが勝手にセットするライブラリパスを完全に無効化する
+
 ENV['LD_LIBRARY_PATH'] = nil
 
 Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-22.04"
-  config.vm.synced_folder ".", "/vagrant"
+  config.vm.synced_folder "../../", "/vagrant"
+  config.vm.network "forwarded_port", guest: 443, host: 4443
 
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "2048"
     vb.cpus = 2
-# 443 は sudo 権限がないと使えないため、ホスト側を 4443 などに変更
-  # config.vm.network "forwarded_port", guest: 443, host: 4443
-# Vagrantfile 内の該当箇所を修正
-config.vm.network "forwarded_port", guest: 443, host: 4443  # host側を 443 から変更
-
-
-
-    # 第14世代CPU対策：ホストのCPU情報をそのまま使う
-    # vb.customize ["modifyvm", :id, "--cpu-profile", "host"]
-   vb.customize ["modifyvm", :id, "--cpuidset", "00000001", "000006e3", "02100800", "00000209", "078bfbff"]
-   
-   
-    # 42環境でGUI周りのエラーを防ぐ
     vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
     vb.customize ["modifyvm", :id, "--audio", "none"]
   end
+
+  config.vm.provision "shell", path: "init.sh", privileged: false
 end
