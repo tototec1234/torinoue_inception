@@ -19,6 +19,84 @@
 3. **初期化ガードを MariaDB に明示的に実装**（参考実装はガードなし）
 4. **healthcheck の追加**（`depends_on: condition: service_healthy` で確実な起動順制御）
 
+### 環境変数・secrets 設計方針（2026-04-11 決定）
+
+#### 背景・根拠
+
+課題書（inspection_subject.pdf Version 5.2）の要件：
+- 環境変数の使用は**必須**（line 174）
+- `.env` ファイルの使用は**必須**（line 175-176）
+- Docker secrets は**強く推奨**（line 176-177）
+- Git リポジトリに認証情報があると**失敗**（line 177-179, 249-252）
+- ディレクトリ構造例に `secrets/` と `srcs/.env` が両方記載（line 200-214）
+
+kamitsui 参考実装は Docker secrets を採用していない（`env_file: .env` のみ）。本実装では課題書の推奨に従い Docker secrets を採用する。
+
+#### 方針
+
+| 項目 | 方針 |
+|------|------|
+| `.env` | 非機密情報のみを記載し、**git 管理する**（`.gitignore` から除外） |
+| `secrets/` | パスワード等の機密情報を格納し、**git 管理しない**（`.gitignore` で除外） |
+| Docker secrets | compose file secrets を使用（Swarm 不要） |
+
+#### `.env` に記載する変数（非機密情報）
+
+```
+YOUR_LEARNER_USERNAME=torinoue
+DOMAIN_NAME=${YOUR_LEARNER_USERNAME}.42.fr
+MARIADB_DATABASE=wordpress
+MARIADB_USER=wpuser
+WP_ADMIN_USER=boss42
+WP_ADMIN_EMAIL=admin@example.com
+WP_USER=wpeditor
+WP_USER_EMAIL=editor@example.com
+```
+
+- `YOUR_LEARNER_USERNAME`: 課題書の "your learner's username" に対応。`docker-compose.yml` の `device:` パスと `DOMAIN_NAME` で参照
+- `${USER}` は使用しない（Vagrant 環境で `vagrant` になるため）
+
+#### `secrets/` に格納するファイル（機密情報）
+
+```
+secrets/
+├── db_password.txt          # MariaDB ユーザーのパスワード（1行、改行なし）
+├── db_root_password.txt     # MariaDB root のパスワード（1行、改行なし）
+└── wp_admin_password.txt    # WordPress admin のパスワード（1行、改行なし）
+```
+
+#### docker-compose.yml での secrets 定義
+
+```yaml
+secrets:
+  db_password:
+    file: ../secrets/db_password.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  wp_admin_password:
+    file: ../secrets/wp_admin_password.txt
+
+services:
+  mariadb:
+    secrets:
+      - db_password
+      - db_root_password
+    # ...
+```
+
+コンテナ内では `/run/secrets/<name>` として配置され、entrypoint.sh で `cat /run/secrets/db_password` で読み取る。
+
+#### .gitignore
+
+```
+secrets/
+.vagrant/
+.DS_Store
+project.zip
+```
+
+注: `srcs/.env` は非機密情報のみなので **除外しない**（git 管理する）。
+
 ---
 
 ## AI協働ルール（AI-Navigated Pair Programming with Scaffolding）
@@ -283,6 +361,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 - [x] タスク 2-5: NGINX 単体テスト（TLS・443）→ ユーザ定義ネットワーク + コンテナ名 `wordpress` スタブ（方針 A）、`curl -v` で TLSv1.3 確認 → `session_logs/0010_session_log_inception.md`
 - [x] タスク 2-6: NGINX + MariaDB 接続テスト（静的ページ）→ `inception-test-net` 上で NGINX・MariaDB・`wordpress` スタブを配置、`index.html` を手動配置して `curl` で HTTP 200、MariaDB は `mariadb-admin ping` で確認 → `nginx.conf` 変更なし → `session_logs/0011_session_log_inception.md`
 - [x] フェーズ2 事後クイズ → `quizzes/0200_nginx_post_quiz_inception.md`（全13問、選択式7/7 全問正解、弱点: Q11 設計レベルの説明力・Q7 `docker network connect` の正確な理解）
+- [x] タスク 0-1: 機密情報の扱いと secrets ディレクトリの構成の検討 → 環境変数・secrets 設計方針を「基本方針」セクションに追記、`YOUR_LEARNER_USERNAME` 変数の採用決定
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み
@@ -302,6 +381,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 
 | # | フェーズ | 時間 | クイズ |
 |---|---------|------|--------|
+| 0 | 横断的タスク（Cross-cutting） | - | - |
 | 1 | Alpine 3.21 基盤構築 + MariaDB 書き直し | 14h | pre + post |
 | 2 | NGINX コンテナ構築 | 14h | pre + post |
 | 3 | WordPress コンテナ再構築 | 12h | pre + post |
@@ -311,6 +391,23 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 | 7 | 校舎環境移植 | 9h | post のみ |
 | 8 | レビュー準備 | 11h | 総合クイズ |
 | **合計** | | **92h** | |
+
+---
+
+## フェーズ 0: 横断的タスク（Cross-cutting）
+
+計画外に発生した設計検討、方針決定、環境問題の解決など、特定フェーズに属さない横断的タスクを記録する。
+
+| # | タスク | 時間 | 実施日 | 備考 |
+|---|--------|------|--------|------|
+| 0-1 | 機密情報の扱いと secrets ディレクトリの構成の検討 | 2h | 2026-04-11 | 環境変数・secrets 設計方針を決定、`YOUR_LEARNER_USERNAME` 変数の採用 |
+
+### 横断的タスク発生時の運用ルール
+
+1. 横断的タスクは「フェーズ 0」に追加する（0-1, 0-2, ... と番号を振る）
+2. 既存フェーズのタスク番号は変更しない（過去のセッションログとの整合性を維持）
+3. 横断的タスクのセッションログには、「次のセッションでやること」に**元のフェーズの継続タスク**を記載する
+4. 「最新のセッションログを読め」というルールはそのまま維持する
 
 ---
 
@@ -424,7 +521,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 |---|--------|------|------|
 | 4-1 | 一次資料読み込み | 2h | [Compose file secrets](https://docs.docker.com/compose/how-tos/use-secrets/), [healthcheck](https://docs.docker.com/reference/compose-file/services/#healthcheck), [volumes](https://docs.docker.com/reference/compose-file/volumes/) |
 | 4-2 | docker-compose.yml 完成 | 3h | 3サービス、networks(bridge)、volumes(driver_opts)、restart、healthcheck |
-| 4-3 | secrets ディレクトリ＋ファイル作成 | 1h | db_password.txt, db_root_password.txt, credentials.txt |
+| 4-3 | secrets ディレクトリ＋ファイル作成 | 1h | db_password.txt, db_root_password.txt, wp_admin_password.txt |
 | 4-4 | docker-compose.yml に secrets 定義追加 | 2h | secrets セクション、各サービスへの配布 |
 | 4-5 | 各 entrypoint.sh を secrets 読み取り対応に修正 | 2h | `/run/secrets/<name>` からの読み取り |
 | 4-6 | .env をパスワード類排除、非機密値のみに整理 | 1h | DOMAIN_NAME, MYSQL_DATABASE 等のみ残す |

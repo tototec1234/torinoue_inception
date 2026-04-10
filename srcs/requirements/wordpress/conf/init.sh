@@ -17,7 +17,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
         --dbpass=${MYSQL_PASSWORD} \
         --dbhost=mariadb
 
-    # WPインストール
+    # 
     wp core install --allow-root \
         --url=https://${DOMAIN_NAME} \
         --title="Inception" \
