@@ -362,6 +362,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 - [x] タスク 2-6: NGINX + MariaDB 接続テスト（静的ページ）→ `inception-test-net` 上で NGINX・MariaDB・`wordpress` スタブを配置、`index.html` を手動配置して `curl` で HTTP 200、MariaDB は `mariadb-admin ping` で確認 → `nginx.conf` 変更なし → `session_logs/0011_session_log_inception.md`
 - [x] フェーズ2 事後クイズ → `quizzes/0200_nginx_post_quiz_inception.md`（全13問、選択式7/7 全問正解、弱点: Q11 設計レベルの説明力・Q7 `docker network connect` の正確な理解）
 - [x] タスク 0-1: 機密情報の扱いと secrets ディレクトリの構成の検討 → 環境変数・secrets 設計方針を「基本方針」セクションに追記、`YOUR_LEARNER_USERNAME` 変数の採用決定
+- [x] タスク 3-1: 参考実装の WordPress 精読 → Dockerfile（Alpine 3.21, PHP拡張8個, wp-cli）, entrypoint.sh（MariaDB待機タイムアウト付き, wp-config生成, コアDL, 2ユーザー作成）, www.conf（PHP-FPM設定, デフォルト値採用）作成完了。重要な設計判断: `wp core download` のタイミングを Dockerfile から entrypoint.sh に変更（bind mount 対応）
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み
