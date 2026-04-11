@@ -15,11 +15,18 @@ RUN apk add --no-cache \
     # 4. 文字処理
     php83-mbstring
 
+# docker networkを立ち上げずにテストするためにホストと同じネットワーク設定でビルドさせる 
+#  docker build --network host -t  inception-wp:test .
+# モジュール一覧だけ確認する場合、エントリポイントを差し替え
+#  docker run --rm --entrypoint php83 inception-wp:test -m
+
+
 # 2. インストールしたパッケージをCLIで実行できるようにする。
 #  docker run --rm alpine:3.21 sh -c "apk search wp-cli"でno such file or directoryなので https://wp-cli.org/#installing　を参考にすると
 # wp-cli.phar を公式配布元からカレントディレクトリにダウンロード
 # ダウンロードした phar が PHP で正常に動作するか確認
 # 実行権限を付与し、PATH の通ったディレクトリに移動して `wp` コマンドとして使えるようにする
+RUN apk add --no-cache curl
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 && php wp-cli.phar --info \
 && chmod +x wp-cli.phar \
@@ -34,7 +41,7 @@ WORKDIR /var/www/html
 # docker run --rm alpine:3.21 sh -c "apk add --no-cache php83-fpm && find /etc -name '*.conf' -path '*fpm*'"
 # で確認
 COPY  conf/www.conf /etc/php83/php-fpm.d/
-COPY tools/entrypoint.sh
+COPY tools/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 # 5. コンテナ起動時の実行コマンド
