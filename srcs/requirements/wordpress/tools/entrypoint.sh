@@ -16,6 +16,14 @@ while ! mariadb-admin ping -h mariadb -u ${MARIADB_USER} -p${MARIADB_PASSWORD} -
 done
 echo "mariaDB is ready"
 
+
+# 3. 初回起動時のみコアファイルダウンロード
+# WordPressのコアファイル（PHPソースコード）をダウンロートして展開する。
+# Dockerfilen で　WORKDIR /var/www/html　指定なのでフルパスは冗長だが、明示的に記載
+if [ ! -f /var/www/html/wp-settings.php ]; then
+    wp core download
+fi
+
 # 2. WordPressコンテナが、MariaDBコンテナを使うための設定
 # ポート番号を明示（レビュー時のライブコーディングで変更しやすくするため）
 # ポート番号を省略すると自動的に3306が使われる
@@ -25,14 +33,6 @@ if [ ! -f wp-config.php ]; then
 		--dbname=${MARIADB_DATABASE} \
 		--dbuser=${MARIADB_USER} \
 		--dbpass=${MARIADB_PASSWORD}
-fi
-
-
-# 3. 初回起動時のみコアファイルダウンロード
-# WordPressのコアファイル（PHPソースコード）をダウンロートして展開する。
-# Dockerfilen で　WORKDIR /var/www/html　指定なのでフルパスは冗長だが、明示的に記載
-if [ ! -f /var/www/html/wp-settings.php ]; then
-    wp core download
 fi
 
 # 4. コアファイルを元にデータベースにWordPressのテーブルを作成し、サイトの初期設定を登録する

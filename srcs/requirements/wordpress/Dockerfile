@@ -41,8 +41,13 @@ WORKDIR /var/www/html
 # docker run --rm alpine:3.21 sh -c "apk add --no-cache php83-fpm && find /etc -name '*.conf' -path '*fpm*'"
 # で確認
 COPY  conf/www.conf /etc/php83/php-fpm.d/
+# PHP の設定で memory_limit を上げる（wp-cli と同じ php83 が読む場所に置く）
+COPY conf/docker-php-memlimit.ini /etc/php83/conf.d/
 COPY tools/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
+
+# 4-1. entrypoint.shでmariadb-admin pingするためにインストール
+RUN apk add mariadb-client
 
 # 5. コンテナ起動時の実行コマンド
 ENTRYPOINT ["/entrypoint.sh"]

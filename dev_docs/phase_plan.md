@@ -363,6 +363,9 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 - [x] フェーズ2 事後クイズ → `quizzes/0200_nginx_post_quiz_inception.md`（全13問、選択式7/7 全問正解、弱点: Q11 設計レベルの説明力・Q7 `docker network connect` の正確な理解）
 - [x] タスク 0-1: 機密情報の扱いと secrets ディレクトリの構成の検討 → 環境変数・secrets 設計方針を「基本方針」セクションに追記、`YOUR_LEARNER_USERNAME` 変数の採用決定
 - [x] タスク 3-1: 参考実装の WordPress 精読 → Dockerfile（Alpine 3.21, PHP拡張8個, wp-cli）, entrypoint.sh（MariaDB待機タイムアウト付き, wp-config生成, コアDL, 2ユーザー作成）, www.conf（PHP-FPM設定, デフォルト値採用）作成完了。重要な設計判断: `wp core download` のタイミングを Dockerfile から entrypoint.sh に変更（bind mount 対応）
+- [x] タスク 3-2: WordPress Dockerfile 詳細検証 → `dev_docs/0409php_packages.md` に基づく最小 `apk` 構成、`COPY`/wp-cli 手順整理、`docker run --entrypoint php83 … -m` でモジュール確認。課題書に拡張個数の義務は無く、計画の「13個」は誤記のため撤廃方針を確認
+- [x] タスク 3-3: `www.conf` 作成完了（`listen = 9000`、Alpine デフォルト `pm.*` 採用）— 3-1 で初版作成、本セッションでレビュー・完了宣言
+- [x] タスク 3-5: MariaDB + WordPress 2 コンテナテスト → `inception-test-net` 上で結線、`mariadb-client`・`memory_limit`・entrypoint 順（core DL → `wp config create`）を整理、`wp db check` で全テーブル OK → `session_logs/0020_session_log_inception.md`
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み
@@ -371,7 +374,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 4. ~~NGINX 未実装~~ → Dockerfile・`nginx.conf` は実装済み、**タスク 2-5・2-6（TLS 単体テスト、NGINX + MariaDB 共存での静的 HTML 配信）完了**（compose 統合は未）
 5. secrets 未設定
 6. ベースイメージ: Debian bookworm → Alpine 3.21 へ全面変更が必要
-7. WordPress Dockerfile: PHP 拡張が不足
+7. WordPress Dockerfile: PHPモジュール ~~拡張が不足~~ 最小構成で 3-2 完了 必要なモジュールは後にテストして見極める
 8. MariaDB init.sh: `--skip-password` は MariaDB では機能しない可能性
 9. WordPress init.sh: MariaDB 待機ロジックがない（致命的）
 10. php-fpm バージョン番号ハードコード（Alpine 化で壊れる）
@@ -492,7 +495,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 | # | タスク | 時間 | 備考 |
 |---|--------|------|------|
 | 3-1 | 参考実装の WordPress 精読 | 2h | Dockerfile + www.conf + entrypoint.sh 全行理解 |
-| 3-2 | Dockerfile 作成 | 3h | Alpine 3.21, PHP拡張（13個）、wp-cli、www.conf |
+| 3-2 | Dockerfile 作成 | 3h | Alpine 3.21, `0409php_packages.md` 最小構成、wp-cli、検証手順はセッション #0019 |
 | 3-3 | www.conf 作成 | 1h | listen=9000, user設定、pm設定 |
 | 3-4 | entrypoint.sh 作成 | 3h | MariaDB ping 待機（タイムアウト付き）、wp 設定、2ユーザー作成 |
 | 3-5 | MariaDB + WordPress 2コンテナテスト | 2h | wp-config.php 生成確認、DB接続確認 |
