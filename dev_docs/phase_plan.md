@@ -366,6 +366,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 - [x] タスク 3-2: WordPress Dockerfile 詳細検証 → `dev_docs/0409php_packages.md` に基づく最小 `apk` 構成、`COPY`/wp-cli 手順整理、`docker run --entrypoint php83 … -m` でモジュール確認。課題書に拡張個数の義務は無く、計画の「13個」は誤記のため撤廃方針を確認
 - [x] タスク 3-3: `www.conf` 作成完了（`listen = 9000`、Alpine デフォルト `pm.*` 採用）— 3-1 で初版作成、本セッションでレビュー・完了宣言
 - [x] タスク 3-5: MariaDB + WordPress 2 コンテナテスト → `inception-test-net` 上で結線、`mariadb-client`・`memory_limit`・entrypoint 順（core DL → `wp config create`）を整理、`wp db check` で全テーブル OK → `session_logs/0020_session_log_inception.md`
+- [x] タスク 3-6: 3コンテナ統合テスト（NGINX追加）→ ユーザ定義ネットワーク `test-net`、`docker run` で 3 サービス、NGINX `-p 443:443`、Vagrant `443→443` + Mac の `/etc/hosts` で **`https://toruinoue.42.fr/`** をブラウザ確認 → `session_logs/0021_session_log_inception.md`
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み
