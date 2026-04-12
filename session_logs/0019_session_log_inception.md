@@ -13,6 +13,8 @@
 - **タスク 3-2**: WordPress `Dockerfile` の詳細検証（`dev_docs/0409php_packages.md` の最小構成方針に合わせる）。`COPY tools/entrypoint.sh /` 等の修正、ビルド、`docker run --rm --entrypoint php83 … -m` で PHP モジュール一覧を確認
 - **計画書の修正方針**: 課題書に「PHP 拡張 13 個」の要件はなく、`phase_plan.md` にあった個数はマジックナンバーだったため、**拡張数は固定せず** `0409php_packages.md` と実験で積み上げる方針を確認
 - **タスク 3-3**: `conf/www.conf` はタスク 3-1 で初版作成済みのため、本セッションで内容確認のうえ **完了宣言**
+- **タスク 3-4**:  `entrypoint.sh` 本実装（MariaDB 待機・`wp-config`・コア DL・2 ユーザー作成）もタスク 3-1 で初版作成済みのため、本セッションで内容確認のうえ **完了宣言**
+
 - **`mariadb-admin` と Dockerfile**: `entrypoint.sh` の待機ループは `mariadb-admin ping` を使用するが、現行イメージにはクライアント未インストールのため **本番相当の `docker run`（entrypoint あり）では未検証**。参考実装（`Vagrant_sample`）では `apk add mariadb-client` 等で対応している。**追加はタスク 3-5 で 2 コンテナ結合テスト時に実際の失敗を確認してから**行う（先に正解を入れず実験で学ぶ方針）
 
 ## Spike記録
