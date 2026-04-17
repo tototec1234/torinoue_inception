@@ -26,6 +26,15 @@
 
 （本セッションでは採用なし）
 
+## 補遺: 同時期に作成されたフェーズ4学習ドキュメント（コミット `b442be8`、2026-04-17）
+
+本セッション（04/13〜14）中に作成したが、校舎環境で後日（04/17）一括コミットされたドキュメント:
+
+- `dev_docs/0413_Q2_driver_opts_answer.md` — `driver_opts` に関する学習メモ
+- `dev_docs/0413_docker-volume-learning.md` — Docker ボリュームの学習メモ
+- `dev_docs/0414_secrets_secrets_design_decision.md` — secrets 設計判断の記録
+- `dev_docs/Inception_52.pdf` — 課題書 PDF（Version 5.2）
+
 ## 次のセッションでやること
 
 - **タスク 4-2**（`docker-compose.yml` 完成）— または事後クイズ・採点の続き（ドライバー判断）
