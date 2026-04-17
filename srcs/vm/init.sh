@@ -20,4 +20,5 @@ sudo apt-get install make -y
 sudo usermod -aG docker vagrant
 
 sudo -- sh -c "echo '127.0.0.1 toruinoue.42.fr' >> /etc/hosts"
-sudo mkdir -p /home/toruinoue/data/mariadb /home/toruinoue/data/wordpress
+sudo mkdir -p /home/torinoue/data/mariadb /home/torinoue/data/wordpress
+sudo chown -R torinoue:torinoue /home/torinoue/data
