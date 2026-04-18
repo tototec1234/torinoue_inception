@@ -1,6 +1,6 @@
 # Inception 進捗ダッシュボード（スナップショット）
 
-> **本ファイル記録日: 2026-04-18**（数値・表の更新タイミングはドライバー指示またはセッション終了時。）
+> **本ファイル記録日: 2026-04-19**（数値・表の更新タイミングはドライバー指示またはセッション終了時。）
 >
 > **`phase_plan.md` 冒頭の「更新日」（現在 **2026-04-13**）を計画の基準日とする。** 本ファイルと日付や数値がずれていても、**ドライバーが `phase_plan` を正とし、差異は度外視してよい**。
 >
@@ -10,14 +10,14 @@
 
 ## A' 進行中フェーズのタスク（抜粋）
 
-**更新時点の位置づけ: フェーズ 4 進行中**（タスク 4-1 完了・**0400 事前クイズ**実施済み `#0024`・**次は 4-2**）。以下は [B4 フェーズ別タスク詳細（全フェーズ）](#b4-フェーズ別タスク詳細全フェーズ) からの抜粋。
+**更新時点の位置づけ: フェーズ 4 進行中**（タスク 4-2 完了・**0400 事前クイズ**実施済み `#0024`・**次は 4-3**）。以下は [B4 フェーズ別タスク詳細（全フェーズ）](#b4-フェーズ別タスク詳細全フェーズ) からの抜粋。
 
-**本フェーズ タスク表のみ 計画（BAC）合計: 18h｜見込み（タスクのみ）: 21h** — タスク＋フェーズ4クイズの EV/AC・見込みは [B2](#b2-フェーズ別タスク当該フェーズのクイズ単独行) を参照。
+**本フェーズ タスク表のみ 計画（BAC）合計: 18h｜見込み（タスクのみ）: 20h** — タスク＋フェーズ4クイズの EV/AC・見込みは [B2](#b2-フェーズ別タスク当該フェーズのクイズ単独行) を参照。
 
 | # | タスク | 時間 | 実動 | 備考 |
 |---|--------|------|------|------|
 | 4-1 | 一次資料読み込み | 2h | 5.0h | [Compose file secrets](https://docs.docker.com/compose/how-tos/use-secrets/), [healthcheck](https://docs.docker.com/reference/compose-file/services/#healthcheck)（読了のみ）, [volumes](https://docs.docker.com/reference/compose-file/volumes/)（`#0022`） |
-| 4-2 | docker-compose.yml 完成 | 3h | `-` | 3サービス、networks(bridge)、volumes(driver_opts)、restart（**healthcheck は含めない**） |
+| 4-2 | docker-compose.yml 完成 | 3h | 2.0h | 3サービス、container_name、networks(bridge)、volumes(driver_opts)、restart、depends_on、env_file。校舎VM動作確認済み（`#0026`） |
 | 4-3 | secrets ディレクトリ＋ファイル作成 | 1h | `-` | db_password.txt, db_root_password.txt, wp_admin_password.txt |
 | 4-4 | docker-compose.yml に secrets 定義追加 | 2h | `-` | secrets セクション、各サービスへの配布 |
 | 4-5 | 各 entrypoint.sh を secrets 読み取り対応に修正 | 2h | `-` | `/run/secrets/<name>` からの読み取り |
@@ -43,14 +43,14 @@
 | 区分 | タスク | クイズ・単独表のみ | タスク＋クイズ単独・総合 |
 |------|--------|-------------------|-------------------------|
 | 計画h合計（BAC） | 108h | 32h | 140h |
-| 完了済みh・計画（EV） | 46h | 19h | 65h |
-| 完了済みh・実績（AC） | 57h | 25h | 82h |
-| 消化率（EV/BAC） | 42.6% | 59.4% | 46.4% |
-| 見込み時間（AC+(BAC−EV)、0.5h切上げ） | 119h | 38h | 157h |
-| 見込み − BAC（= AC − EV） | 11h | 6h | 17h |
-| 残り（BAC−EV、0.5h切上げ） | 62h | 13h | 75h |
+| 完了済みh・計画（EV） | 49h | 19h | 68h |
+| 完了済みh・実績（AC） | 59h | 25h | 84h |
+| 消化率（EV/BAC） | 45.4% | 59.4% | 48.6% |
+| 見込み時間（AC+(BAC−EV)、0.5h切上げ） | 118h | 38h | 156h |
+| 見込み − BAC（= AC − EV） | 10h | 6h | 16h |
+| 残り（BAC−EV、0.5h切上げ） | 59h | 13h | 72h |
 
-※ クイズの BAC **31.5h** は計算後 **32h** として列に記載。統合 BAC は **108+32=140h**。消化率は丸め前の EV/BAC で算出。タスク BAC は旧 96h + タスク 0-3（12h）= 108h。タスク 0-3 は未完了のため EV/AC には反映しない。
+※ クイズの BAC **31.5h** は計算後 **32h** として列に記載。統合 BAC は **108+32=140h**。消化率は丸め前の EV/BAC で算出。タスク BAC は旧 96h + タスク 0-3（12h）= 108h。タスク 0-3 は未完了のため EV/AC には反映しない。タスク 4-2 完了（計画 3h、実動 2.0h）を反映。
 
 ---
 
@@ -64,13 +64,13 @@
 | 1 | 17h | 17h | 19h | 100.0% | 19h | 0h | 2h |
 | 2 | 18h | 18h | 22h | 100.0% | 22h | 0h | 4h |
 | 3 | 23h | 21h | 24h | 91.3% | 26h | 2h | 3h |
-| 4 | 22h | 4h | 13h | 18.2% | 31h | 18h | 9h |
+| 4 | 22h | 7h | 15h | 31.8% | 30h | 15h | 8h |
 | 5 | 9h | 0h | 0h | 0.0% | 9h | 9h | 0h |
 | 6 | 13h | 0h | 0h | 0.0% | 13h | 13h | 0h |
 | 7 | 11h | 0h | 0h | 0.0% | 11h | 11h | 0h |
 | 8 | 14h | 0h | 0h | 0.0% | 14h | 14h | 0h |
 
-※ フェーズ 2 の AC **21.5h** → 表では **22h**（0.5h 切上げ）。フェーズ 3 はタスク 3-4 完了を反映（AC **23.5h** → **24h**）。**フェーズ 0** はタスク 0-3（校舎VirtualBox環境、12h）を追加、未完了のため EV/AC は 0-1+0-2 のみ（BAC 17h、EV 5h、AC 5h）。**フェーズ 4** の BAC は **タスク 18h ＋ フェーズ4クイズ（0400 pre/post）4h ＝ 22h**。EV はタスク 4-1（2h）＋ 0400 事前クイズ（2h）＝ **4h**。AC はタスク 4-1（5h）＋ 0400 事前クイズ実動（8h）＝ **13h**（`#0024`）。**フェーズ 5〜8** は EV=0 のため見込み=BAC、残り=全計画。
+※ フェーズ 2 の AC **21.5h** → 表では **22h**（0.5h 切上げ）。フェーズ 3 はタスク 3-4 完了を反映（AC **23.5h** → **24h**）。**フェーズ 0** はタスク 0-3（校舎VirtualBox環境、12h）を追加、未完了のため EV/AC は 0-1+0-2 のみ（BAC 17h、EV 5h、AC 5h）。**フェーズ 4** の BAC は **タスク 18h ＋ フェーズ4クイズ（0400 pre/post）4h ＝ 22h**。EV はタスク 4-1（2h）＋ タスク 4-2（3h）＋ 0400 事前クイズ（2h）＝ **7h**。AC はタスク 4-1（5h）＋ タスク 4-2（2.0h）＋ 0400 事前クイズ実動（8h）＝ **15h**（`#0026`）。**フェーズ 5〜8** は EV=0 のため見込み=BAC、残り=全計画。
 
 ---
 
@@ -149,12 +149,12 @@
 
 ### フェーズ 4: Docker Compose 統合 + secrets（14時間）
 
-**本フェーズ 計画（BAC）合計: 18h｜見込み: 21h**
+**本フェーズ 計画（BAC）合計: 18h｜見込み: 20h**
 
 | # | タスク | 時間 | 実動 | 備考 |
 |---|--------|------|------|------|
 | 4-1 | 一次資料読み込み | 2h | 5.0h | [Compose file secrets](https://docs.docker.com/compose/how-tos/use-secrets/), [healthcheck](https://docs.docker.com/reference/compose-file/services/#healthcheck)（読了のみ）, [volumes](https://docs.docker.com/reference/compose-file/volumes/)（`#0022`） |
-| 4-2 | docker-compose.yml 完成 | 3h | `-` | 3サービス、networks(bridge)、volumes(driver_opts)、restart（**healthcheck は含めない**） |
+| 4-2 | docker-compose.yml 完成 | 3h | 2.0h | 3サービス、container_name、networks(bridge)、volumes(driver_opts)、restart、depends_on、env_file。校舎VM動作確認済み（`#0026`） |
 | 4-3 | secrets ディレクトリ＋ファイル作成 | 1h | `-` | db_password.txt, db_root_password.txt, wp_admin_password.txt |
 | 4-4 | docker-compose.yml に secrets 定義追加 | 2h | `-` | secrets セクション、各サービスへの配布 |
 | 4-5 | 各 entrypoint.sh を secrets 読み取り対応に修正 | 2h | `-` | `/run/secrets/<name>` からの読み取り |

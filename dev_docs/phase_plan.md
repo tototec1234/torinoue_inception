@@ -396,11 +396,12 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 - [x] タスク 3-5: MariaDB + WordPress 2 コンテナテスト → `inception-test-net` 上で結線、`mariadb-client`・`memory_limit`・entrypoint 順（core DL → `wp config create`）を整理、`wp db check` で全テーブル OK → `session_logs/0020_session_log_inception.md`
 - [x] タスク 3-6: 3コンテナ統合テスト（NGINX追加）→ ユーザ定義ネットワーク `test-net`、`docker run` で 3 サービス、NGINX `-p 443:443`、Vagrant `443→443` + Mac の `/etc/hosts` で **`https://toruinoue.42.fr/`** をブラウザ確認 → `session_logs/0021_session_log_inception.md`
 - [x] タスク 4-1: 一次資料読み込み（**実動 5.0h**）→ [Compose file secrets](https://docs.docker.com/compose/how-tos/use-secrets/)、[healthcheck](https://docs.docker.com/reference/compose-file/services/#healthcheck)、[volumes](https://docs.docker.com/reference/compose-file/volumes/) をすべて目を通した。**healthcheck は課題に明示がないため提出物・計画から除外**する判断（根拠: `dev_docs/subject_ja.md` クラッシュ時再起動は `restart` で満たせる旨）。補助資料として Qiita（etaroid 氏）3 件を参照。→ `session_logs/0022_session_log_inception.md`
+- [x] タスク 4-2: `docker-compose.yml` 完成（**実動 2.0h**）→ 3サービス・`container_name`・`networks`(bridge)・`volumes`(`driver_opts`)・`restart: unless-stopped`・`depends_on`・`env_file`・NGINX に `wordpress_data` ボリューム追加。`environment:` の重複削除、`dns: 8.8.8.8` 除去。校舎 VirtualBox 環境で動作確認済み。→ `session_logs/0026_session_log_inception.md`
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み
 2. ~~WordPress Dockerfile URL typo~~ → 修正済み
-3. docker-compose.yml: networks なし、volume driver_opts なし、restart なし（課題要件違反）
+3. ~~docker-compose.yml: networks なし、volume driver_opts なし、restart なし（課題要件違反）~~ → タスク 4-2 で解消（networks/volumes/restart/container_name 等すべて設定済み）
 4. ~~NGINX 未実装~~ → Dockerfile・`nginx.conf` は実装済み、**タスク 2-5・2-6（TLS 単体テスト、NGINX + MariaDB 共存での静的 HTML 配信）完了**（compose 統合は未）
 5. secrets 未設定
 6. ベースイメージ: Debian bookworm → Alpine 3.21 へ全面変更が必要
