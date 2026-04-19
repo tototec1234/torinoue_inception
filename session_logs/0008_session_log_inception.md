@@ -49,7 +49,7 @@
 
 ## 次のセッションでやること
 
-- **タスク 2-2**: 参考実装の NGINX 精読（Dockerfile + `nginx.conf` の全行理解、計画 1h）
+- **タスク 2-2**:  NGINX 精読（Dockerfile + `nginx.conf` の全行理解、計画 1h）
 
 ---
 
@@ -67,5 +67,5 @@ Inception課題（42Tokyo）を進めています。
 - dev_docs/phase_plan.md（全体計画・運用ルール）
 - session_logs/ 内の最新セッションログ（最も番号が大きいファイル）
 
-今日やること: タスク 2-2（参考実装の NGINX 精読）
+今日やること: タスク 2-2（ NGINX 精読）
 ```

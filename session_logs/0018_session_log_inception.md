@@ -1,7 +1,7 @@
 # セッションログ #0018
 
 > 日付: 2026-04-11
-> セッション種別: タスク 3-1（参考実装の WordPress 精読）
+> セッション種別: タスク 3-1（ WordPress 精読）
 > 対応フェーズ: 3
 > 開始: 2026-04-11 14:33
 > 終了: 2026-04-11 21:01
@@ -10,7 +10,7 @@
 
 ## このセッションで完了したこと
 
-- 参考実装（`Vagrant_sample`）の WordPress 関連ファイル（Dockerfile, entrypoint.sh, www.conf）を精読
+- Vagrant使用の参考実装（`Vagrant_sample`）の WordPress 関連ファイル（Dockerfile, entrypoint.sh, www.conf）を精読
 - `srcs/requirements/wordpress/Dockerfile` を作成（Alpine 3.21, PHP拡張8個, wp-cli, nobody所有権）
 - `srcs/requirements/wordpress/tools/entrypoint.sh` を作成（MariaDB待機、wp-config生成、コアDL、インストール、2ユーザー作成）
 - `srcs/requirements/wordpress/conf/www.conf` を作成（PHP-FPM設定、デフォルト値採用）
@@ -64,7 +64,7 @@ pm.max_spare_servers = 3
 
 **解説:**
 - Alpine 3.21 の PHP-FPM パッケージに含まれるデフォルト設定を確認
-- 参考実装の値と一致していることを確認（マジックナンバーではなく、Alpine の標準値）
+- 値と一致していることを確認（マジックナンバーではなく、Alpine の標準値）
 - Inception での影響: `www.conf` でこれらのデフォルト値を採用し、レビュー時に「Alpine の標準設定を採用しました」と根拠を示せる
 - レビューでの説明ポイント: 「独自の数値ではなく、Alpine 公式のデフォルト値を採用しました。結合テスト時にパラメータを変更して最小値を探る予定です」
 
@@ -73,7 +73,7 @@ pm.max_spare_servers = 3
 ### 判断1: wp core download のタイミング（Dockerfile → entrypoint.sh）
 
 **背景:**
-- 参考実装は Dockerfile で `RUN wp core download` を実行
+- Vagrant使用の参考実装は Dockerfile で `RUN wp core download` を実行
 - Inception 課題では `driver_opts: type: none, o: bind` を使用（bind mount 相当）
 - bind mount は起動時にホスト側のディレクトリでコンテナ内のディレクトリを上書きする
 
@@ -98,7 +98,7 @@ pm.max_spare_servers = 3
 ### 判断2: MariaDB 待機にタイムアウトを追加
 
 **背景:**
-- 参考実装は `until mariadb-admin ping ...` で無限ループ
+- Vagrant使用の参考実装は `until mariadb-admin ping ...` で無限ループ
 - MariaDB が起動しない場合、永遠に待ち続ける
 
 **決定:**
@@ -122,7 +122,7 @@ pm.max_spare_servers = 3
 ### 判断3: ポート番号の明示（`:3306` を省略しない）
 
 **背景:**
-- 参考実装は `--dbhost=mariadb` でポート番号を省略
+- Vagrant使用の参考実装は `--dbhost=mariadb` でポート番号を省略
 - MySQL/MariaDB のデフォルトポートは 3306
 
 **決定:**
@@ -144,7 +144,7 @@ pm.max_spare_servers = 3
 **理由:**
 - Docker ネットワーク内では `0.0.0.0` は不要
 - セキュリティ上、必要最小限のバインドアドレスにする
-- 参考実装も `listen = 9000`
+- Vagrant使用の参考実装も `listen = 9000`
 
 ## 現在のファイル状態
 

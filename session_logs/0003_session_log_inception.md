@@ -15,14 +15,14 @@
 - 一次資料2件の読み込みと要点整理:
   1. [mariadb-install-db 公式ドキュメント](https://mariadb.com/docs/server/clients-and-utilities/deployment-tools/mariadb-install-db)
   2. [Alpine Wiki - MariaDB](https://wiki.alpinelinux.org/wiki/MariaDB)
-- 参考実装（Vagrant_sample）のMariaDB関連ファイルと一次資料の照合
+- Vagrant使用の参考実装（Vagrant_sample）のMariaDB関連ファイルと一次資料の照合
 - 一次資料から導いた実装設計方針の整理（タスク1-4〜1-6向け）
 - 以下の概念を学習・理解:
   - `mariadb-install-db` の役割と主要オプション（`--user`, `--basedir`, `--skip-test-db`）
   - unix_socket 認証の仕組み（OS ユーザー名と MariaDB ユーザー名の一致で認証、パスワード不要）
   - Alpine 3.9 以降の設定ファイルパス変更（`/etc/mysql/my.cnf` → `/etc/my.cnf.d/mariadb-server.cnf`）
   - Alpine のバージョン体系（edge = 開発版、numbered = 安定版、penultimate stable = 3.21）
-- 参考実装との差別化ポイントに一次資料の根拠を対応付け:
+- Vagrant使用の参考実装との差別化ポイントに一次資料の根拠を対応付け:
   - `mariadb-install-db` を entrypoint.sh で実行すべき理由
   - `--skip-test-db` オプションの採用根拠
   - 一時起動時の `--skip-networking` の根拠
@@ -42,7 +42,7 @@
 ## 次のセッションでやること
 
 タスク 1-4: MariaDB Dockerfile を Alpine 3.21 で新規作成（計画: 3h）
-- 参考実装を理解した上で、自分の設計で書く
+- Vagrant使用の参考実装を理解した上で、自分の設計で書く
 - `apk add --no-cache mariadb mariadb-client`
 - `/run/mysqld` ディレクトリ作成 + 所有権設定
 - 設定ファイルのコピー先: `/etc/my.cnf.d/`（実機で要確認）

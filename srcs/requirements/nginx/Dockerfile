@@ -57,7 +57,7 @@ EXPOSE 443
 
 # 8. コンテナ起動時の実行コマンド
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
-# デバッグ時にdocker run myimage hoge.shなどで上書してテストすることができる
+# デバッグ時にdocker run myimage hoge.shなどで上書してテストする場合は、CMDを使用する
 # CMD ["nginx", "-g", "daemon off;"]
 
-# 自分の課題との差（phase_plan より）: あなたは Docker secrets や healthcheck などを足す想定。参考実装は「証明書を Dockerfile 内で生成」なので、秘密情報の扱い方だけは設計が異なる、とメモしておくとよいです。
+# 自分の課題との差（phase_plan より）: あなたは Docker secrets や healthcheck などを足す想定。Vagrant使用の場合は「証明書を Dockerfile 内で生成」なので、秘密情報の扱い方だけは設計が異なる、とメモ

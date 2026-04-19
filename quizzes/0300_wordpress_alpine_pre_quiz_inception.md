@@ -221,7 +221,7 @@ Alpine で `php83-fpm` をインストールすると、設定ファイルの階
 └── php.ini
 ```
 
-参考実装（`Vagrant_sample`）でも `COPY conf/www.conf /etc/php83/php-fpm.d/` が使われている。
+Vagrant使用の参考実装（`Vagrant_sample`）でも `COPY conf/www.conf /etc/php83/php-fpm.d/` が使われている。
 
 選択肢の整理:
 - 1番 `/etc/php/8.3/fpm/pool.d/` → Debian/Ubuntu の構成
@@ -313,7 +313,7 @@ https://docs.docker.com/engine/storage/volumes/
 
 **解説：**
 
-参考実装は方針 A（`RUN wp core download`）を採用している。方針 A の利点:
+Vagrant使用の参考実装は方針 A（`RUN wp core download`）を採用している。方針 A の利点:
 - ビルド時にレイヤーキャッシュが効く（再ビルド高速化）
 - 起動時のネットワーク依存がない
 - 起動が高速
@@ -416,12 +416,12 @@ fi
 - ✅ volume にデータを残す必要がある
 - ⚠️ 「起動のたびにダウンロード」は不正確。ガードで初回のみ実行するべき
 
-**結論**: Inception 課題（`driver_opts: type: none, o: bind` 使用）では、**方針 B（entrypoint.sh でガード付き `wp core download`）が合理的**。kamitsui の参考実装もこの方針を採用している。
+**結論**: Inception 課題（`driver_opts: type: none, o: bind` 使用）では、**方針 B（entrypoint.sh でガード付き `wp core download`）が合理的**。kamitsui のVagrant使用の参考実装もこの方針を採用している。
 
 **一次資料：**
 - [Docker Volumes - Populate a volume using a container](https://docs.docker.com/engine/storage/volumes/#populate-a-volume-using-a-container) — named volume の初回コピー動作の説明（bind mount では適用されない点に注意）
 - [Docker bind mounts](https://docs.docker.com/engine/storage/bind-mounts/) — bind mount はコンテナ内のデータを上書きする挙動の説明
-- [kamitsui 参考実装 - WordPress](https://kamitsui.github.io/Inception/mandatory/svc_wordpress.html) — `setup.sh` 内で `wp core download` を実行
+- [kamitsui Vagrant使用の参考実装 - WordPress](https://kamitsui.github.io/Inception/mandatory/svc_wordpress.html) — `setup.sh` 内で `wp core download` を実行
 
 ---
 

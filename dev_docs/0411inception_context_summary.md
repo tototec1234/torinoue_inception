@@ -18,11 +18,11 @@
 ### 1. kamitsui のドキュメント
 - **URL**: https://kamitsui.github.io/Inception/
 - **特徴**: 
-  - 詳細なドキュメント付きの参考実装
+  - 詳細なドキュメント付きのVagrant使用の参考実装
   - `driver_opts: type: none, o: bind` を使った Volume 戦略を採用
   - `wp core download` は entrypoint.sh（setup.sh）内で実行（方針 B）
 
-### 2. 友人の参考実装
+### 2. Vagrant使用のVagrant使用の参考実装
 - **特徴**:
   - Alpine Linux ベース
   - `wp core download` を Dockerfile 内で実行（方針 A）

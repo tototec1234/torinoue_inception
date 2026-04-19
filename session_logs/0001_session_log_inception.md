@@ -15,7 +15,7 @@
 - フェーズ1 事前クイズ実施 → `quizzes/0100_alpine_mariadb_pre_quiz_inception.md`
 - タスク 1-1: Alpine 3.21 の M2 Mac + Vagrant 動作検証 → **OK**
   - aarch64, apk, mariadbd 11.4.8 全て動作確認
-- タスク 1-2: 参考実装の MariaDB 精読
+- タスク 1-2:  MariaDB 精読
   - 事後クイズ → `quizzes/0102_mariadb_reference_post_quiz_inception.md`
 - コミット: `104d883`
 

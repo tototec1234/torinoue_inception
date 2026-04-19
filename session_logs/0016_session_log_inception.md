@@ -195,7 +195,7 @@ ps aux | grep VBoxHeadless
 
 ## 次のセッションでやること
 
-**フェーズ3: WordPress コンテナ再構築 — タスク 3-1（参考実装の WordPress 精読）の続き**
+**フェーズ3: WordPress コンテナ再構築 — タスク 3-1（ WordPress 精読）の続き**
 
 - 環境: 自宅 M2 Mac
 - セッション開始時: `date '+%Y-%m-%d %H:%M'` を実行して開始時刻を記録
@@ -217,7 +217,7 @@ Inception課題（42Tokyo）を進めています。
 - dev_docs/phase_plan.md（全体計画・運用ルール）
 - session_logs/0016_session_log_inception.md（最新セッションログ）
 
-今日やること: タスク 3-1（参考実装の WordPress 精読）の続き
+今日やること: タスク 3-1（ WordPress 精読）の続き
 環境: 自宅 M2 Mac
 
 セッション開始時刻の記録（ターミナルで実行し、結果をチャットに貼る）:

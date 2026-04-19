@@ -13,7 +13,7 @@
 - 課題書（inspection_subject.pdf Version 5.2）の `.env` / secrets 提出要件を精査し、解釈を確定
 - 「.env には非機密情報のみ、実際のパスワードは `secrets/` から Docker secrets で渡す」方針を決定
 - `YOUR_LEARNER_USERNAME` 変数を `.env` に定義し、`docker-compose.yml` の `device:` パスと `DOMAIN_NAME` で参照する方針を決定
-- kamitsui 参考実装が Docker secrets を採用していないことを確認（`env_file: .env` のみ）
+- kamitsui Vagrant使用の参考実装が Docker secrets を採用していないことを確認（`env_file: .env` のみ）
 - Docker secrets 方式の具体的なファイル構成・`.gitignore` の扱いを確定
 - `phase_plan.md` の「基本方針」セクションに「環境変数・secrets 設計方針」を追記
 - フェーズ 0（横断的タスク）を新設し、タスク 0-1 として記録
@@ -60,7 +60,7 @@
 
 ## 次のセッションでやること
 
-- タスク 3-1: 参考実装の WordPress 精読（セッション 0016 からの継続）
+- タスク 3-1:  WordPress 精読（セッション 0016 からの継続）
   - ※ フェーズ4のタスクはフェーズ3完了後に着手
 - セッション開始時: `date '+%Y-%m-%d %H:%M'` を実行して開始時刻を記録
 
@@ -77,7 +77,7 @@ Inception課題（42Tokyo）を進めています。
 - dev_docs/phase_plan.md（全体計画・運用ルール）
 - session_logs/ 内の最新セッションログ（最も番号が大きいファイル）
 
-今日やること: タスク 3-1（参考実装の WordPress 精読）の続き
+今日やること: タスク 3-1（ WordPress 精読）の続き
 環境: 自宅 M2 Mac
 
 セッション開始時刻の記録（ターミナルで実行し、結果をチャットに貼る）:

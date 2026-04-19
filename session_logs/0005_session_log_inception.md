@@ -13,7 +13,7 @@
 ## このセッションで完了したこと
 
 - MariaDB Dockerfile を Alpine 3.21 で新規作成（Scaffolding 方式: AI = Navigator、学習者 = Driver）
-- 参考実装との差別化ポイントを反映:
+- Vagrant使用の参考実装との差別化ポイントを反映:
   - `mariadb-install-db` を Dockerfile から除外（entrypoint.sh で初期化ガード付き実行する設計）
   - 設定ファイルの配置先を `/etc/my.cnf.d/` に変更（Alpine の `!includedir` 構造を尊重）
   - `apk add --no-cache` でイメージサイズ最小化

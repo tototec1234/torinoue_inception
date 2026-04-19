@@ -8,8 +8,8 @@
 
 ## このセッションで完了したこと
 
-- 課題書（inspection_subject.pdf）と参考実装（Vagrant_sample）の全ファイル精読
-- 現状実装（Debian版 MariaDB・WordPress）と参考実装・課題要件の3点比較レビュー
+- 課題書（inspection_subject.pdf）とVagrant使用の参考実装（Vagrant_sample）の全ファイル精読
+- 現状実装（Debian版 MariaDB・WordPress）とVagrant使用の参考実装・課題要件の3点比較レビュー
 - 重大な問題の洗い出しと一部修正:
   - `WP_ADMIN_USER` を `boss42` に変更（"admin" 含有の課題要件違反を修正）
   - WordPress Dockerfile の URL typo 修正（`githubsercontent` → `githubusercontent`）
