@@ -26,6 +26,8 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 		sleep 1
 	done
 
+	# secrets からパスワードを読み取り
+	MARIADB_PASSWORD=$(cat /run/secrets/db_password | tr -d '\n')
 	# SQL実行（CREATE DATABASE / USER / GRANT / FLUSH）
 	# DBのrootユーザーとしてログイン（「d」がない）
 	# User Accounts Created by Defaul

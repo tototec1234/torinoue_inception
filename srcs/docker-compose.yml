@@ -31,8 +31,9 @@ services:
       - wordpress_data:/var/www/html
     restart: unless-stopped
     secrets:
-      - wp_admin_password
       - db_password
+      - wp_admin_password
+      - wp_editor_password
     # environment:
       # - DOMAIN_NAME=${YOUR_LEARNER_USERNAME}.42.fr
       # - WP_ADMIN_USER=boss42
@@ -101,3 +102,5 @@ secrets:
     file: ../secrets/db_root_password.txt
   wp_admin_password:
     file: ../secrets/wp_admin_password.txt
+  wp_editor_password:
+    file: ../secrets/wp_editor_password.txt

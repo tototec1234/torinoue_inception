@@ -399,6 +399,8 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 - [x] タスク 4-2: `docker-compose.yml` 完成（**実動 2.0h**）→ 3サービス・`container_name`・`networks`(bridge)・`volumes`(`driver_opts`)・`restart: unless-stopped`・`depends_on`・`env_file`・NGINX に `wordpress_data` ボリューム追加。`environment:` の重複削除、`dns: 8.8.8.8` 除去。校舎 VirtualBox 環境で動作確認済み。→ `session_logs/0026_session_log_inception.md`
 - [x] タスク 4-3: secrets ディレクトリ＋ファイル作成（**実動 1.0h**）→ `secrets/db_password.txt`, `db_root_password.txt`, `wp_admin_password.txt`（改行なし）。`.gitignore` で除外済み確認。→ `session_logs/0027_session_log_inception.md`
 - [x] タスク 4-4: docker-compose.yml に secrets 定義追加（**実動 1.5h**）→ トップレベル `secrets:` 3 つ + mariadb/wordpress サービスへの配布。`.env` パスワード 3 行コメントアウト（4-6 先行）。502 確認（entrypoint 未対応のため想定通り）。→ `session_logs/0028_session_log_inception.md`
+- [x] タスク 4-5: 各 entrypoint.sh を secrets 読み取り対応に修正（**実動 1.5h**）→ MariaDB: if ブロック内で `db_password` 読み取り、WordPress: 冒頭で `db_password` + if ブロック内で `wp_admin_password` / `wp_editor_password` 読み取り。`--build` なしで segfault する問題を解決。→ `session_logs/0029_session_log_inception.md`
+- [x] タスク 4-6: .env をパスワード類排除、非機密値のみに整理（**実動: 4-5 に含む**）→ `WP_USER_PASSWORD` も `wp_editor_password` として secrets に移行。コメントアウト行削除。→ `session_logs/0029_session_log_inception.md`
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み
