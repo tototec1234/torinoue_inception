@@ -10,11 +10,14 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     restart: unless-stopped
+    secrets:
+      - db_root_password
+      - db_password
     # environment:
-      # MARIADB_PASSWORD: wppassword
+    #   MARIADB_ROOT_PASSWORD: run/secrets/db_root_password
+    #   MARIADB_PASSWORD: run/secrets/db_password
       # MARIADB_DATABASE: wordpress
       # MARIADB_USER: wpuser
-      # MARIADB_ROOT_PASSWORD: rootpassword
     networks:
       - torinoue_network
   wordpress:
@@ -27,18 +30,21 @@ services:
     volumes:
       - wordpress_data:/var/www/html
     restart: unless-stopped
+    secrets:
+      - wp_admin_password
+      - db_password
     # environment:
       # - DOMAIN_NAME=${YOUR_LEARNER_USERNAME}.42.fr
       # - WP_ADMIN_USER=boss42
-      # - WP_ADMIN_PASSWORD=wpadminpass
+      # WP_ADMIN_PASSWORD: run/secrets/wp_admin_password
+      
       # - WP_ADMIN_EMAIL=admin@example.com
-      # - WP_USER=wpeditor
+      # - WP_USER=wpeditor  ←secretsへ入れない。プラグインの変更などの権限はないので。
       # - WP_USER_EMAIL=editor@example.com
       # - WP_USER_PASSWORD=wpeditorpass
-      # - MARIADB_ROOT_PASSWORD=rootpassword
       # - MARIADB_DATABASE=wordpress
       # - MARIADB_USER=wpuser
-      # - MARIADB_PASSWORD=wppassword
+      # MARIADB_PASSWORD: run/secrets/db_password
     networks:
       - torinoue_network
 
@@ -87,3 +93,11 @@ volumes:
 networks:
   torinoue_network:
     driver: bridge
+
+secrets:
+  db_password:
+    file: ../secrets/db_password.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  wp_admin_password:
+    file: ../secrets/wp_admin_password.txt

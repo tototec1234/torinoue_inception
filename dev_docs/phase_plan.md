@@ -398,6 +398,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 - [x] タスク 4-1: 一次資料読み込み（**実動 5.0h**）→ [Compose file secrets](https://docs.docker.com/compose/how-tos/use-secrets/)、[healthcheck](https://docs.docker.com/reference/compose-file/services/#healthcheck)、[volumes](https://docs.docker.com/reference/compose-file/volumes/) をすべて目を通した。**healthcheck は課題に明示がないため提出物・計画から除外**する判断（根拠: `dev_docs/subject_ja.md` クラッシュ時再起動は `restart` で満たせる旨）。補助資料として Qiita（etaroid 氏）3 件を参照。→ `session_logs/0022_session_log_inception.md`
 - [x] タスク 4-2: `docker-compose.yml` 完成（**実動 2.0h**）→ 3サービス・`container_name`・`networks`(bridge)・`volumes`(`driver_opts`)・`restart: unless-stopped`・`depends_on`・`env_file`・NGINX に `wordpress_data` ボリューム追加。`environment:` の重複削除、`dns: 8.8.8.8` 除去。校舎 VirtualBox 環境で動作確認済み。→ `session_logs/0026_session_log_inception.md`
 - [x] タスク 4-3: secrets ディレクトリ＋ファイル作成（**実動 1.0h**）→ `secrets/db_password.txt`, `db_root_password.txt`, `wp_admin_password.txt`（改行なし）。`.gitignore` で除外済み確認。→ `session_logs/0027_session_log_inception.md`
+- [x] タスク 4-4: docker-compose.yml に secrets 定義追加（**実動 1.5h**）→ トップレベル `secrets:` 3 つ + mariadb/wordpress サービスへの配布。`.env` パスワード 3 行コメントアウト（4-6 先行）。502 確認（entrypoint 未対応のため想定通り）。→ `session_logs/0028_session_log_inception.md`
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み

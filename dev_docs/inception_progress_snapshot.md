@@ -10,7 +10,7 @@
 
 ## A' 進行中フェーズのタスク（抜粋）
 
-**更新時点の位置づけ: フェーズ 4 進行中**（タスク 4-3 完了・**0400 事前クイズ**実施済み `#0024`・**次は 4-4**）。以下は [B4 フェーズ別タスク詳細（全フェーズ）](#b4-フェーズ別タスク詳細全フェーズ) からの抜粋。
+**更新時点の位置づけ: フェーズ 4 進行中**（タスク 4-4 完了・**0400 事前クイズ**実施済み `#0024`・**次は 4-5**）。以下は [B4 フェーズ別タスク詳細（全フェーズ）](#b4-フェーズ別タスク詳細全フェーズ) からの抜粋。
 
 **本フェーズ タスク表のみ 計画（BAC）合計: 18h｜見込み（タスクのみ）: 20h** — タスク＋フェーズ4クイズの EV/AC・見込みは [B2](#b2-フェーズ別タスク当該フェーズのクイズ単独行) を参照。
 
@@ -19,7 +19,7 @@
 | 4-1 | 一次資料読み込み | 2h | 5.0h | [Compose file secrets](https://docs.docker.com/compose/how-tos/use-secrets/), [healthcheck](https://docs.docker.com/reference/compose-file/services/#healthcheck)（読了のみ）, [volumes](https://docs.docker.com/reference/compose-file/volumes/)（`#0022`） |
 | 4-2 | docker-compose.yml 完成 | 3h | 2.0h | 3サービス、container_name、networks(bridge)、volumes(driver_opts)、restart、depends_on、env_file。校舎VM動作確認済み（`#0026`） |
 | 4-3 | secrets ディレクトリ＋ファイル作成 | 1h | 1.0h | 3ファイル作成、改行なし確認、`.gitignore` 除外確認（`#0027`） |
-| 4-4 | docker-compose.yml に secrets 定義追加 | 2h | `-` | secrets セクション、各サービスへの配布 |
+| 4-4 | docker-compose.yml に secrets 定義追加 | 2h | 1.5h | トップレベル secrets 3つ + mariadb/wordpress 配布。`.env` パスワード3行コメントアウト（4-6先行）。502確認（`#0028`） |
 | 4-5 | 各 entrypoint.sh を secrets 読み取り対応に修正 | 2h | `-` | `/run/secrets/<name>` からの読み取り |
 | 4-6 | .env をパスワード類排除、非機密値のみに整理 | 1h | `-` | DOMAIN_NAME, MYSQL_DATABASE 等のみ残す |
 | 4-7 | 統合テスト | 3h | `-` | `make up` → 全コンテナ起動 → WP アクセス → コンテナ kill → 自動再起動 → ボリューム永続化確認 |
@@ -43,14 +43,14 @@
 | 区分 | タスク | クイズ・単独表のみ | タスク＋クイズ単独・総合 |
 |------|--------|-------------------|-------------------------|
 | 計画h合計（BAC） | 108h | 32h | 140h |
-| 完了済みh・計画（EV） | 50h | 19h | 69h |
-| 完了済みh・実績（AC） | 60h | 25h | 85h |
-| 消化率（EV/BAC） | 46.3% | 59.4% | 49.3% |
+| 完了済みh・計画（EV） | 52h | 19h | 71h |
+| 完了済みh・実績（AC） | 62h | 25h | 87h |
+| 消化率（EV/BAC） | 48.1% | 59.4% | 50.7% |
 | 見込み時間（AC+(BAC−EV)、0.5h切上げ） | 118h | 38h | 156h |
 | 見込み − BAC（= AC − EV） | 10h | 6h | 16h |
-| 残り（BAC−EV、0.5h切上げ） | 58h | 13h | 71h |
+| 残り（BAC−EV、0.5h切上げ） | 56h | 13h | 69h |
 
-※ クイズの BAC **31.5h** は計算後 **32h** として列に記載。統合 BAC は **108+32=140h**。消化率は丸め前の EV/BAC で算出。タスク BAC は旧 96h + タスク 0-3（12h）= 108h。タスク 0-3 は未完了のため EV/AC には反映しない。タスク 4-3 完了（計画 1h、実動 1.0h）を反映。
+※ クイズの BAC **31.5h** は計算後 **32h** として列に記載。統合 BAC は **108+32=140h**。消化率は丸め前の EV/BAC で算出。タスク BAC は旧 96h + タスク 0-3（12h）= 108h。タスク 0-3 は未完了のため EV/AC には反映しない。タスク 4-4 完了（計画 2h、実動 1.5h）を反映。
 
 ---
 
@@ -64,13 +64,13 @@
 | 1 | 17h | 17h | 19h | 100.0% | 19h | 0h | 2h |
 | 2 | 18h | 18h | 22h | 100.0% | 22h | 0h | 4h |
 | 3 | 23h | 21h | 24h | 91.3% | 26h | 2h | 3h |
-| 4 | 22h | 8h | 16h | 36.4% | 30h | 14h | 8h |
+| 4 | 22h | 10h | 18h | 45.5% | 30h | 12h | 8h |
 | 5 | 9h | 0h | 0h | 0.0% | 9h | 9h | 0h |
 | 6 | 13h | 0h | 0h | 0.0% | 13h | 13h | 0h |
 | 7 | 11h | 0h | 0h | 0.0% | 11h | 11h | 0h |
 | 8 | 14h | 0h | 0h | 0.0% | 14h | 14h | 0h |
 
-※ フェーズ 2 の AC **21.5h** → 表では **22h**（0.5h 切上げ）。フェーズ 3 はタスク 3-4 完了を反映（AC **23.5h** → **24h**）。**フェーズ 0** はタスク 0-3（校舎VirtualBox環境、12h）を追加、未完了のため EV/AC は 0-1+0-2 のみ（BAC 17h、EV 5h、AC 5h）。**フェーズ 4** の BAC は **タスク 18h ＋ フェーズ4クイズ（0400 pre/post）4h ＝ 22h**。EV はタスク 4-1（2h）＋ タスク 4-2（3h）＋ タスク 4-3（1h）＋ 0400 事前クイズ（2h）＝ **8h**。AC はタスク 4-1（5h）＋ タスク 4-2（2.0h）＋ タスク 4-3（1.0h）＋ 0400 事前クイズ実動（8h）＝ **16h**（`#0027`）。**フェーズ 5〜8** は EV=0 のため見込み=BAC、残り=全計画。
+※ フェーズ 2 の AC **21.5h** → 表では **22h**（0.5h 切上げ）。フェーズ 3 はタスク 3-4 完了を反映（AC **23.5h** → **24h**）。**フェーズ 0** はタスク 0-3（校舎VirtualBox環境、12h）を追加、未完了のため EV/AC は 0-1+0-2 のみ（BAC 17h、EV 5h、AC 5h）。**フェーズ 4** の BAC は **タスク 18h ＋ フェーズ4クイズ（0400 pre/post）4h ＝ 22h**。EV はタスク 4-1（2h）＋ タスク 4-2（3h）＋ タスク 4-3（1h）＋ タスク 4-4（2h）＋ 0400 事前クイズ（2h）＝ **10h**。AC はタスク 4-1（5h）＋ タスク 4-2（2.0h）＋ タスク 4-3（1.0h）＋ タスク 4-4（1.5h）＋ 0400 事前クイズ実動（8h）＝ **17.5h → 18h**（`#0028`）。**フェーズ 5〜8** は EV=0 のため見込み=BAC、残り=全計画。
 
 ---
 
@@ -156,7 +156,7 @@
 | 4-1 | 一次資料読み込み | 2h | 5.0h | [Compose file secrets](https://docs.docker.com/compose/how-tos/use-secrets/), [healthcheck](https://docs.docker.com/reference/compose-file/services/#healthcheck)（読了のみ）, [volumes](https://docs.docker.com/reference/compose-file/volumes/)（`#0022`） |
 | 4-2 | docker-compose.yml 完成 | 3h | 2.0h | 3サービス、container_name、networks(bridge)、volumes(driver_opts)、restart、depends_on、env_file。校舎VM動作確認済み（`#0026`） |
 | 4-3 | secrets ディレクトリ＋ファイル作成 | 1h | 1.0h | 3ファイル作成、改行なし確認、`.gitignore` 除外確認（`#0027`） |
-| 4-4 | docker-compose.yml に secrets 定義追加 | 2h | `-` | secrets セクション、各サービスへの配布 |
+| 4-4 | docker-compose.yml に secrets 定義追加 | 2h | 1.5h | トップレベル secrets 3つ + mariadb/wordpress 配布。`.env` パスワード3行コメントアウト（4-6先行）。502確認（`#0028`） |
 | 4-5 | 各 entrypoint.sh を secrets 読み取り対応に修正 | 2h | `-` | `/run/secrets/<name>` からの読み取り |
 | 4-6 | .env をパスワード類排除、非機密値のみに整理 | 1h | `-` | DOMAIN_NAME, MYSQL_DATABASE 等のみ残す |
 | 4-7 | 統合テスト | 3h | `-` | `make up` → 全コンテナ起動 → WP アクセス → コンテナ kill → 自動再起動 → ボリューム永続化確認 |
