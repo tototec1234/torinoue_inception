@@ -10,7 +10,7 @@
 
 ## A' 進行中フェーズのタスク（抜粋）
 
-**更新時点の位置づけ: フェーズ 4 進行中**（タスク 4-2 完了・**0400 事前クイズ**実施済み `#0024`・**次は 4-3**）。以下は [B4 フェーズ別タスク詳細（全フェーズ）](#b4-フェーズ別タスク詳細全フェーズ) からの抜粋。
+**更新時点の位置づけ: フェーズ 4 進行中**（タスク 4-3 完了・**0400 事前クイズ**実施済み `#0024`・**次は 4-4**）。以下は [B4 フェーズ別タスク詳細（全フェーズ）](#b4-フェーズ別タスク詳細全フェーズ) からの抜粋。
 
 **本フェーズ タスク表のみ 計画（BAC）合計: 18h｜見込み（タスクのみ）: 20h** — タスク＋フェーズ4クイズの EV/AC・見込みは [B2](#b2-フェーズ別タスク当該フェーズのクイズ単独行) を参照。
 
@@ -18,7 +18,7 @@
 |---|--------|------|------|------|
 | 4-1 | 一次資料読み込み | 2h | 5.0h | [Compose file secrets](https://docs.docker.com/compose/how-tos/use-secrets/), [healthcheck](https://docs.docker.com/reference/compose-file/services/#healthcheck)（読了のみ）, [volumes](https://docs.docker.com/reference/compose-file/volumes/)（`#0022`） |
 | 4-2 | docker-compose.yml 完成 | 3h | 2.0h | 3サービス、container_name、networks(bridge)、volumes(driver_opts)、restart、depends_on、env_file。校舎VM動作確認済み（`#0026`） |
-| 4-3 | secrets ディレクトリ＋ファイル作成 | 1h | `-` | db_password.txt, db_root_password.txt, wp_admin_password.txt |
+| 4-3 | secrets ディレクトリ＋ファイル作成 | 1h | 1.0h | 3ファイル作成、改行なし確認、`.gitignore` 除外確認（`#0027`） |
 | 4-4 | docker-compose.yml に secrets 定義追加 | 2h | `-` | secrets セクション、各サービスへの配布 |
 | 4-5 | 各 entrypoint.sh を secrets 読み取り対応に修正 | 2h | `-` | `/run/secrets/<name>` からの読み取り |
 | 4-6 | .env をパスワード類排除、非機密値のみに整理 | 1h | `-` | DOMAIN_NAME, MYSQL_DATABASE 等のみ残す |
@@ -43,14 +43,14 @@
 | 区分 | タスク | クイズ・単独表のみ | タスク＋クイズ単独・総合 |
 |------|--------|-------------------|-------------------------|
 | 計画h合計（BAC） | 108h | 32h | 140h |
-| 完了済みh・計画（EV） | 49h | 19h | 68h |
-| 完了済みh・実績（AC） | 59h | 25h | 84h |
-| 消化率（EV/BAC） | 45.4% | 59.4% | 48.6% |
+| 完了済みh・計画（EV） | 50h | 19h | 69h |
+| 完了済みh・実績（AC） | 60h | 25h | 85h |
+| 消化率（EV/BAC） | 46.3% | 59.4% | 49.3% |
 | 見込み時間（AC+(BAC−EV)、0.5h切上げ） | 118h | 38h | 156h |
 | 見込み − BAC（= AC − EV） | 10h | 6h | 16h |
-| 残り（BAC−EV、0.5h切上げ） | 59h | 13h | 72h |
+| 残り（BAC−EV、0.5h切上げ） | 58h | 13h | 71h |
 
-※ クイズの BAC **31.5h** は計算後 **32h** として列に記載。統合 BAC は **108+32=140h**。消化率は丸め前の EV/BAC で算出。タスク BAC は旧 96h + タスク 0-3（12h）= 108h。タスク 0-3 は未完了のため EV/AC には反映しない。タスク 4-2 完了（計画 3h、実動 2.0h）を反映。
+※ クイズの BAC **31.5h** は計算後 **32h** として列に記載。統合 BAC は **108+32=140h**。消化率は丸め前の EV/BAC で算出。タスク BAC は旧 96h + タスク 0-3（12h）= 108h。タスク 0-3 は未完了のため EV/AC には反映しない。タスク 4-3 完了（計画 1h、実動 1.0h）を反映。
 
 ---
 
@@ -64,13 +64,13 @@
 | 1 | 17h | 17h | 19h | 100.0% | 19h | 0h | 2h |
 | 2 | 18h | 18h | 22h | 100.0% | 22h | 0h | 4h |
 | 3 | 23h | 21h | 24h | 91.3% | 26h | 2h | 3h |
-| 4 | 22h | 7h | 15h | 31.8% | 30h | 15h | 8h |
+| 4 | 22h | 8h | 16h | 36.4% | 30h | 14h | 8h |
 | 5 | 9h | 0h | 0h | 0.0% | 9h | 9h | 0h |
 | 6 | 13h | 0h | 0h | 0.0% | 13h | 13h | 0h |
 | 7 | 11h | 0h | 0h | 0.0% | 11h | 11h | 0h |
 | 8 | 14h | 0h | 0h | 0.0% | 14h | 14h | 0h |
 
-※ フェーズ 2 の AC **21.5h** → 表では **22h**（0.5h 切上げ）。フェーズ 3 はタスク 3-4 完了を反映（AC **23.5h** → **24h**）。**フェーズ 0** はタスク 0-3（校舎VirtualBox環境、12h）を追加、未完了のため EV/AC は 0-1+0-2 のみ（BAC 17h、EV 5h、AC 5h）。**フェーズ 4** の BAC は **タスク 18h ＋ フェーズ4クイズ（0400 pre/post）4h ＝ 22h**。EV はタスク 4-1（2h）＋ タスク 4-2（3h）＋ 0400 事前クイズ（2h）＝ **7h**。AC はタスク 4-1（5h）＋ タスク 4-2（2.0h）＋ 0400 事前クイズ実動（8h）＝ **15h**（`#0026`）。**フェーズ 5〜8** は EV=0 のため見込み=BAC、残り=全計画。
+※ フェーズ 2 の AC **21.5h** → 表では **22h**（0.5h 切上げ）。フェーズ 3 はタスク 3-4 完了を反映（AC **23.5h** → **24h**）。**フェーズ 0** はタスク 0-3（校舎VirtualBox環境、12h）を追加、未完了のため EV/AC は 0-1+0-2 のみ（BAC 17h、EV 5h、AC 5h）。**フェーズ 4** の BAC は **タスク 18h ＋ フェーズ4クイズ（0400 pre/post）4h ＝ 22h**。EV はタスク 4-1（2h）＋ タスク 4-2（3h）＋ タスク 4-3（1h）＋ 0400 事前クイズ（2h）＝ **8h**。AC はタスク 4-1（5h）＋ タスク 4-2（2.0h）＋ タスク 4-3（1.0h）＋ 0400 事前クイズ実動（8h）＝ **16h**（`#0027`）。**フェーズ 5〜8** は EV=0 のため見込み=BAC、残り=全計画。
 
 ---
 
@@ -114,9 +114,9 @@
 | # | タスク | 時間 | 実動 | 備考 |
 |---|--------|------|------|------|
 | 1-1 | Alpine 3.21 の M2 Mac + Vagrant 動作検証 | 2h | `-` | `FROM alpine:3.21` でビルド＋基本コマンド実行テスト（`#0001`: 事前クイズ+1-1+1-2 同一セッション、実動未計測） |
-| 1-2 | 参考実装の MariaDB 精読・写経 | 2h | `-` | Dockerfile, my.cnf, entrypoint.sh の全行を理解 |
+| 1-2 |  MariaDB 精読・写経 | 2h | `-` | Dockerfile, my.cnf, entrypoint.sh の全行を理解 |
 | 1-3 | 一次資料の読み込み | 2h | 1.0h | [mariadb-install-db](https://mariadb.com/docs/server/clients-and-utilities/deployment-tools/mariadb-install-db), [Alpine Wiki](https://wiki.alpinelinux.org/wiki/MariaDB)（`#0003`） |
-| 1-4 | MariaDB Dockerfile を Alpine 3.21 で新規作成 | 3h | 2.0h | 参考実装を理解した上で、自分の設計で書く（`#0005`） |
+| 1-4 | MariaDB Dockerfile を Alpine 3.21 で新規作成 | 3h | 2.0h | Vagrant使用の参考実装を理解した上で、自分の設計で書く（`#0005`） |
 | 1-5 | my.cnf 作成 | 1h | 5.0h | bind-address, port, skip-networking 設定（`#0006`: 1-5+1-6+1-7 合計を本行に記載） |
 | 1-6 | entrypoint.sh 作成 | 2h | `-` | 初期化ガード + ping 待機 + 冪等な SQL + exec mariadbd |
 | 1-7 | 単体テスト | 1h | `-` | コンテナ起動 → mariadb-admin ping → クライアント接続 |
@@ -128,7 +128,7 @@
 | # | タスク | 時間 | 実動 | 備考 |
 |---|--------|------|------|------|
 | 2-1 | NGINX + TLS の概念学習 | 3h | 2.0h | 一次資料: [nginx.org](https://nginx.org/en/docs/), [RFC 8446 (TLS 1.3)](https://datatracker.ietf.org/doc/html/rfc8446)（`#0008`） |
-| 2-2 | 参考実装の NGINX 精読 | 1h | 6.0h | Dockerfile + nginx.conf の全行理解（`#0009`: 2-2+2-3+2-4 合計を本行に記載） |
+| 2-2 |  NGINX 精読 | 1h | 6.0h | Dockerfile + nginx.conf の全行理解（`#0009`: 2-2+2-3+2-4 合計を本行に記載） |
 | 2-3 | Dockerfile 作成 | 2h | `-` | Alpine 3.21, openssl, 自己署名証明書 |
 | 2-4 | nginx.conf 作成 | 4h | `-` | TLSv1.2/1.3 のみ、443、fastcgi_pass、静的ファイル |
 | 2-5 | 単体テスト | 2h | 2.0h | `curl -kv https://localhost:443` でTLSバージョン確認（`#0010`） |
@@ -140,7 +140,7 @@
 
 | # | タスク | 時間 | 実動 | 備考 |
 |---|--------|------|------|------|
-| 3-1 | 参考実装の WordPress 精読 | 2h | 4.0h | Dockerfile + www.conf + entrypoint.sh 全行理解（`#0018`） |
+| 3-1 |  WordPress 精読 | 2h | 4.0h | Dockerfile + www.conf + entrypoint.sh 全行理解（`#0018`） |
 | 3-2 | Dockerfile 作成 | 3h | 1.0h | Alpine 3.21, `0409php_packages.md` 最小構成、wp-cli（`#0019`: 3-2+3-3 合計を本行に記載） |
 | 3-3 | www.conf 作成 | 1h | `-` | listen=9000, user設定、pm設定 |
 | 3-4 | entrypoint.sh 作成 | 3h | `-` | MariaDB ping 待機（タイムアウト付き）、wp 設定、2ユーザー作成、事後ミニクイズ実施 → `0304_wordpress_entrypoint_post_quiz_inception.md`。**完了宣言・内容確認**は `session_logs/0019_session_log_inception.md`（実動は他タスクと同一セッションに含まれる場合は `-`、AC は計画 3h を採用） |
@@ -155,7 +155,7 @@
 |---|--------|------|------|------|
 | 4-1 | 一次資料読み込み | 2h | 5.0h | [Compose file secrets](https://docs.docker.com/compose/how-tos/use-secrets/), [healthcheck](https://docs.docker.com/reference/compose-file/services/#healthcheck)（読了のみ）, [volumes](https://docs.docker.com/reference/compose-file/volumes/)（`#0022`） |
 | 4-2 | docker-compose.yml 完成 | 3h | 2.0h | 3サービス、container_name、networks(bridge)、volumes(driver_opts)、restart、depends_on、env_file。校舎VM動作確認済み（`#0026`） |
-| 4-3 | secrets ディレクトリ＋ファイル作成 | 1h | `-` | db_password.txt, db_root_password.txt, wp_admin_password.txt |
+| 4-3 | secrets ディレクトリ＋ファイル作成 | 1h | 1.0h | 3ファイル作成、改行なし確認、`.gitignore` 除外確認（`#0027`） |
 | 4-4 | docker-compose.yml に secrets 定義追加 | 2h | `-` | secrets セクション、各サービスへの配布 |
 | 4-5 | 各 entrypoint.sh を secrets 読み取り対応に修正 | 2h | `-` | `/run/secrets/<name>` からの読み取り |
 | 4-6 | .env をパスワード類排除、非機密値のみに整理 | 1h | `-` | DOMAIN_NAME, MYSQL_DATABASE 等のみ残す |

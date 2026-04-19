@@ -14,11 +14,11 @@
 - **開発環境**: M2 Mac + Vagrant (VMware Fusion) → 完成後に校舎環境 (VirtualBox) へ移植
 - **Mandatory パートのみ**
 
-### 参考実装との差別化ポイント（4つ）
+### Vagrant使用の参考実装との差別化ポイント（4つ）
 
-1. **Docker secrets の実装**（参考実装は未対応）
+1. **Docker secrets の実装**（Vagrant使用の参考実装は未対応）
 2. **MariaDB待機をより堅牢に実装**（ping ループ＋タイムアウト付き）
-3. **初期化ガードを MariaDB に明示的に実装**（参考実装はガードなし）
+3. **初期化ガードを MariaDB に明示的に実装**（Vagrant使用の参考実装はガードなし）
 4. ~~**healthcheck**~~ → **計画から除外**（2026-04-12 タスク 4-1 判断）。課題書（`dev_docs/subject_ja.md`）に healthcheck の明示なし。クラッシュ時の自動再起動は **`restart`** で満たす。起動順は `depends_on` と **アプリケーションレベル待機**（MariaDB ping 等）で対応。一次資料の [healthcheck](https://docs.docker.com/reference/compose-file/services/#healthcheck) は読了済み。
 
 ### 環境変数・secrets 設計方針（2026-04-11 決定）
@@ -32,7 +32,7 @@
 - Git リポジトリに認証情報があると**失敗**（line 177-179, 249-252）
 - ディレクトリ構造例に `secrets/` と `srcs/.env` が両方記載（line 200-214）
 
-kamitsui 参考実装は Docker secrets を採用していない（`env_file: .env` のみ）。本実装では課題書の推奨に従い Docker secrets を採用する。
+kamitsui Vagrant使用の参考実装は Docker secrets を採用していない（`env_file: .env` のみ）。本実装では課題書の推奨に従い Docker secrets を採用する。
 
 #### 方針
 
@@ -371,7 +371,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 - [x] MariaDB 事後クイズ実施済み → `quizzes/0000_mariadb_post_quiz_inception.md`（v1計画以前に実施）
 - [x] フェーズ1 事前クイズ実施済み → `quizzes/0100_alpine_mariadb_pre_quiz_inception.md`
 - [x] タスク 1-1: Alpine 3.21 の M2 Mac + Vagrant 動作検証 → **OK**（aarch64, apk, mariadbd 11.4.8 全て動作確認）
-- [x] タスク 1-2: 参考実装の MariaDB 精読 → 事後クイズ `quizzes/0102_mariadb_reference_post_quiz_inception.md`
+- [x] タスク 1-2:  MariaDB 精読 → 事後クイズ `quizzes/0102_mariadb_reference_post_quiz_inception.md`
 - [x] タスク 1-3: 一次資料の読み込み（mariadb-install-db 公式ドキュメント + Alpine Wiki MariaDB）
 - [x] AI協働ワークフロー定義（横断的施策）: AI-Navigated Pair Programming with Scaffolding 方式の策定、`.cursor/rules/scaffolding-workflow.mdc`（Policy as Code）+ `phase_plan.md`（運用ドキュメント）に成文化
 - [x] タスク 1-4: MariaDB Dockerfile を Alpine 3.21 で新規作成 → ビルド成功、イメージ内部検証完了
@@ -381,7 +381,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 - [x] フェーズ1 事後クイズ → `quizzes/0100_alpine_mariadb_post_quiz_inception.md`（全18問、弱点の洗い出し完了）
 - [x] フェーズ2 事前クイズ → `quizzes/0200_nginx_pre_quiz_inception.md`（全18問、弱点の洗い出し完了）
 - [x] タスク 2-1: NGINX + TLS の概念学習 → 一次資料（Beginner’s Guide / `ngx_http_ssl_module` / RFC 8446 ほか）読了、`ngx_http_fastcgi_module` 確認、リバースプロキシ／**上流（upstream）** の整理 → `dev_docs/nginx_reverse_proxy_upstream_memo.md`
-- [x] タスク 2-2: 参考実装の NGINX 精読（`Vagrant_sample` の Dockerfile + `nginx.conf`）→ 実装と横断して消化
+- [x] タスク 2-2:  NGINX 精読（`Vagrant_sample` の Dockerfile + `nginx.conf`）→ 実装と横断して消化
 - [x] タスク 2-3: NGINX 用 Dockerfile 作成 → Alpine 3.21、`openssl`、自己署名証明書、`ENTRYPOINT` と `daemon off` 等 → `srcs/requirements/nginx/Dockerfile`
 - [x] タスク 2-4: `nginx.conf` 作成 → TLS、443、`fastcgi_pass`、静的配信 → `srcs/requirements/nginx/conf/torinoue_nginx.conf`（学習メモ: `dev_docs/inception_nginx_daemon_memo.md`, `dev_docs/docker_nginx_study.md`）。**タスク 2-4 専用の事後ミニクイズは実施しない**（`0200_nginx_pre_quiz_inception.md` で `ssl_protocols` / `try_files` / `fastcgi_pass` のサービス名解決などを既にカバーしたため、計画から除外）
 - [x] タスク 2-5: NGINX 単体テスト（TLS・443）→ ユーザ定義ネットワーク + コンテナ名 `wordpress` スタブ（方針 A）、`curl -v` で TLSv1.3 確認 → `session_logs/0010_session_log_inception.md`
@@ -389,7 +389,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 - [x] フェーズ2 事後クイズ → `quizzes/0200_nginx_post_quiz_inception.md`（全13問、選択式7/7 全問正解、弱点: Q11 設計レベルの説明力・Q7 `docker network connect` の正確な理解）
 - [x] タスク 0-1: 機密情報の扱いと secrets ディレクトリの構成の検討 → 環境変数・secrets 設計方針を「基本方針」セクションに追記、`YOUR_LEARNER_USERNAME` 変数の採用決定
 - [x] タスク 0-2: 進捗管理・ダッシュボード整備（`phase_plan` / `inception_progress_snapshot.md` の再構成・タスク表集約）→ **着手** 2026-04-12 23:08（`0022` 直後）／**実動 3.0h**／`session_logs/0023_session_log_inception.md`
-- [x] タスク 3-1: 参考実装の WordPress 精読 → Dockerfile（Alpine 3.21, PHP拡張8個, wp-cli）, entrypoint.sh（MariaDB待機タイムアウト付き, wp-config生成, コアDL, 2ユーザー作成）, www.conf（PHP-FPM設定, デフォルト値採用）作成完了。重要な設計判断: `wp core download` のタイミングを Dockerfile から entrypoint.sh に変更（bind mount 対応）
+- [x] タスク 3-1:  WordPress 精読 → Dockerfile（Alpine 3.21, PHP拡張8個, wp-cli）, entrypoint.sh（MariaDB待機タイムアウト付き, wp-config生成, コアDL, 2ユーザー作成）, www.conf（PHP-FPM設定, デフォルト値採用）作成完了。重要な設計判断: `wp core download` のタイミングを Dockerfile から entrypoint.sh に変更（bind mount 対応）
 - [x] タスク 3-2: WordPress Dockerfile 詳細検証 → `dev_docs/0409php_packages.md` に基づく最小 `apk` 構成、`COPY`/wp-cli 手順整理、`docker run --entrypoint php83 … -m` でモジュール確認。課題書に拡張個数の義務は無く、計画の「13個」は誤記のため撤廃方針を確認
 - [x] タスク 3-3: `www.conf` 作成完了（`listen = 9000`、Alpine デフォルト `pm.*` 採用）— 3-1 で初版作成、本セッションでレビュー・完了宣言
 - [x] タスク 3-4: `entrypoint.sh` 本実装（MariaDB 待機・`wp-config`・コア DL・2 ユーザー作成）→ 事後ミニクイズ `quizzes/0304_wordpress_entrypoint_post_quiz_inception.md`／**完了宣言・内容確認** `session_logs/0019_session_log_inception.md`
@@ -397,6 +397,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 - [x] タスク 3-6: 3コンテナ統合テスト（NGINX追加）→ ユーザ定義ネットワーク `test-net`、`docker run` で 3 サービス、NGINX `-p 443:443`、Vagrant `443→443` + Mac の `/etc/hosts` で **`https://toruinoue.42.fr/`** をブラウザ確認 → `session_logs/0021_session_log_inception.md`
 - [x] タスク 4-1: 一次資料読み込み（**実動 5.0h**）→ [Compose file secrets](https://docs.docker.com/compose/how-tos/use-secrets/)、[healthcheck](https://docs.docker.com/reference/compose-file/services/#healthcheck)、[volumes](https://docs.docker.com/reference/compose-file/volumes/) をすべて目を通した。**healthcheck は課題に明示がないため提出物・計画から除外**する判断（根拠: `dev_docs/subject_ja.md` クラッシュ時再起動は `restart` で満たせる旨）。補助資料として Qiita（etaroid 氏）3 件を参照。→ `session_logs/0022_session_log_inception.md`
 - [x] タスク 4-2: `docker-compose.yml` 完成（**実動 2.0h**）→ 3サービス・`container_name`・`networks`(bridge)・`volumes`(`driver_opts`)・`restart: unless-stopped`・`depends_on`・`env_file`・NGINX に `wordpress_data` ボリューム追加。`environment:` の重複削除、`dns: 8.8.8.8` 除去。校舎 VirtualBox 環境で動作確認済み。→ `session_logs/0026_session_log_inception.md`
+- [x] タスク 4-3: secrets ディレクトリ＋ファイル作成（**実動 1.0h**）→ `secrets/db_password.txt`, `db_root_password.txt`, `wp_admin_password.txt`（改行なし）。`.gitignore` で除外済み確認。→ `session_logs/0027_session_log_inception.md`
 
 ### 発見された重大な問題（レビュー結果）
 1. ~~管理者ユーザー名違反: `wpadmin` → "admin" を含む~~ → `boss42` に修正済み
@@ -632,7 +633,7 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 
 | ファイル名 | タスク | 内容 |
 |-----------|--------|------|
-| `0102_mariadb_reference_post_quiz_inception.md` | 1-2 | 参考実装の MariaDB 精読 |
+| `0102_mariadb_reference_post_quiz_inception.md` | 1-2 |  MariaDB 精読 |
 | `0104_mariadb_dockerfile_post_quiz_inception.md` | 1-4 | MariaDB Dockerfile 理解 |
 | `0106_mariadb_entrypoint_post_quiz_inception.md` | 1-6 | MariaDB entrypoint.sh 理解 |
 | `0304_wordpress_entrypoint_post_quiz_inception.md` | 3-4 | WordPress entrypoint.sh 理解 |
@@ -649,9 +650,9 @@ AIが先に正解・解説を書くと、ドライバーの視界に答えが入
 
 ---
 
-## 参考実装との比較
+## Vagrant使用の参考実装との比較
 
-| 項目 | 参考実装 (Vagrant_sample) | 自分の実装（予定） |
+| 項目 | Vagrant使用の参考実装 (Vagrant_sample) | 自分の実装（予定） |
 |------|--------------------------|-------------------|
 | ベースイメージ | Alpine 3.22 | **Alpine 3.21** |
 | VM provider | VirtualBox | VMware Fusion（→後で VirtualBox に移植）|
